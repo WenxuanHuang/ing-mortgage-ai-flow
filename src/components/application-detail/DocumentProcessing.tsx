@@ -33,6 +33,20 @@ const DocumentProcessing: React.FC = () => {
         { name: 'Average Balance', value: '€12,450', confidence: 94, sourcePage: 2, docName: 'bank_statement.pdf' },
         { name: 'Monthly Inflows', value: '€4,180', confidence: 89, sourcePage: 3, docName: 'bank_statement.pdf' }
       ]
+    },
+    {
+      name: 'Employer Statement',
+      extractionProgress: 95,
+      validationScore: 96,
+      tasks: [
+        'Validating employment contract details',
+        'Cross-checking salary information with payroll systems'
+      ],
+      fields: [
+        { name: 'Annual Salary', value: '€50,400', confidence: 100, sourcePage: 1, docName: 'employer_statement.pdf' },
+        { name: 'Employment Start Date', value: '2020-03-15', confidence: 98, sourcePage: 1, docName: 'employer_statement.pdf' },
+        { name: 'Employment Type', value: 'Permanent', confidence: 100, sourcePage: 1, docName: 'employer_statement.pdf' }
+      ]
     }
   ];
 

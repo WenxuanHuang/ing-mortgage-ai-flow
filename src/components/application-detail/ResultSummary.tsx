@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { TrendingUp, Calculator, FileText, DollarSign, Shield } from 'lucide-react';
+import { TrendingUp, Calculator, FileText, DollarSign, Shield, Bot } from 'lucide-react';
 
 const ResultSummary: React.FC = () => {
   const mockResultData = {
@@ -22,8 +22,6 @@ const ResultSummary: React.FC = () => {
     incomeAnalysis: {
       bankStatement: {
         estimatedAnnualIncome: 49800,
-        monthsAnalyzed: 12,
-        averageMonthlyIncome: 4150,
         incomeComponents: {
           salary: 42000,
           bonuses: 3600,
@@ -32,8 +30,6 @@ const ResultSummary: React.FC = () => {
       },
       paymentSlip: {
         estimatedAnnualIncome: 50400,
-        grossMonthlySalary: 4200,
-        netMonthlySalary: 3150,
         incomeComponents: {
           baseSalary: 48000,
           holidayAllowance: 2400,
@@ -42,8 +38,6 @@ const ResultSummary: React.FC = () => {
       },
       employerStatement: {
         estimatedAnnualIncome: 50400,
-        officialAnnualSalary: 50400,
-        bonuses: 0,
         incomeComponents: {
           annualSalary: 50400,
           variableCompensation: 0,
@@ -58,7 +52,11 @@ const ResultSummary: React.FC = () => {
     }
   };
 
-  const loanToIncomeRatio = (mockResultData.maxLoanAmount / mockResultData.incomeAnalysis.finalEstimate.annualIncome).toFixed(1);
+  const currentLoanToIncomeRatio = (mockResultData.maxLoanAmount / mockResultData.incomeAnalysis.finalEstimate.annualIncome);
+  const targetRatio = 5.0;
+  const suggestedLoanAmount = mockResultData.incomeAnalysis.finalEstimate.annualIncome * targetRatio;
+  const ratioDeviation = Math.abs(currentLoanToIncomeRatio - targetRatio);
+  const needsAdjustment = ratioDeviation > 0.2;
 
   return (
     <div className="space-y-6">
@@ -82,14 +80,6 @@ const ResultSummary: React.FC = () => {
                 <div>
                   <span className="text-sm text-gray-600">Estimated Annual Income</span>
                   <p className="text-xl font-bold">€{mockResultData.incomeAnalysis.bankStatement.estimatedAnnualIncome.toLocaleString()}</p>
-                </div>
-                <div>
-                  <span className="text-sm text-gray-600">Average Monthly</span>
-                  <p className="font-medium">€{mockResultData.incomeAnalysis.bankStatement.averageMonthlyIncome}</p>
-                </div>
-                <div>
-                  <span className="text-sm text-gray-600">Analysis Period</span>
-                  <p className="font-medium">{mockResultData.incomeAnalysis.bankStatement.monthsAnalyzed} months</p>
                 </div>
                 
                 <div className="pt-3 border-t border-gray-200">
@@ -124,14 +114,6 @@ const ResultSummary: React.FC = () => {
                   <span className="text-sm text-gray-600">Estimated Annual Income</span>
                   <p className="text-xl font-bold">€{mockResultData.incomeAnalysis.paymentSlip.estimatedAnnualIncome.toLocaleString()}</p>
                 </div>
-                <div>
-                  <span className="text-sm text-gray-600">Gross Monthly</span>
-                  <p className="font-medium">€{mockResultData.incomeAnalysis.paymentSlip.grossMonthlySalary}</p>
-                </div>
-                <div>
-                  <span className="text-sm text-gray-600">Net Monthly</span>
-                  <p className="font-medium">€{mockResultData.incomeAnalysis.paymentSlip.netMonthlySalary}</p>
-                </div>
                 
                 <div className="pt-3 border-t border-gray-200">
                   <h4 className="text-sm font-medium text-gray-700 mb-2">Income Components</h4>
@@ -164,14 +146,6 @@ const ResultSummary: React.FC = () => {
                 <div>
                   <span className="text-sm text-gray-600">Estimated Annual Income</span>
                   <p className="text-xl font-bold">€{mockResultData.incomeAnalysis.employerStatement.estimatedAnnualIncome.toLocaleString()}</p>
-                </div>
-                <div>
-                  <span className="text-sm text-gray-600">Official Annual Salary</span>
-                  <p className="font-medium">€{mockResultData.incomeAnalysis.employerStatement.officialAnnualSalary.toLocaleString()}</p>
-                </div>
-                <div>
-                  <span className="text-sm text-gray-600">Annual Bonuses</span>
-                  <p className="font-medium">€{mockResultData.incomeAnalysis.employerStatement.bonuses}</p>
                 </div>
                 
                 <div className="pt-3 border-t border-gray-200">
@@ -207,7 +181,7 @@ const ResultSummary: React.FC = () => {
                 </div>
                 <div>
                   <span className="text-sm text-green-700">Overall Confidence Score</span>
-                  <p className="text-2xl font-bold text-green-800">{mockResultData.incomeAnalysis.finalEstimate.overallConfidence}%</p>
+                  <p className="text-2xl font-bold text-green-800">{(100 - mockResultData.incomeAnalysis.finalEstimate.deviation).toFixed(1)}%</p>
                 </div>
                 <div>
                   <span className="text-sm text-green-700">Document Deviation</span>
@@ -220,8 +194,8 @@ const ResultSummary: React.FC = () => {
                 <p className="text-sm text-green-700">
                   The three income verification documents show excellent consistency with only {mockResultData.incomeAnalysis.finalEstimate.deviation}% deviation. 
                   The employer statement provides the most authoritative source, 
-                  while bank statement analysis over {mockResultData.incomeAnalysis.bankStatement.monthsAnalyzed} months confirms sustained income patterns. 
-                  This high confidence score of {mockResultData.incomeAnalysis.finalEstimate.overallConfidence}% (calculated as 100% - {mockResultData.incomeAnalysis.finalEstimate.deviation}% deviation) supports the lending decision.
+                  while bank statement analysis confirms sustained income patterns. 
+                  This high confidence score of {(100 - mockResultData.incomeAnalysis.finalEstimate.deviation).toFixed(1)}% supports the lending decision.
                 </p>
               </div>
             </CardContent>
@@ -236,7 +210,7 @@ const ResultSummary: React.FC = () => {
             Lending Decision Summary
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div>
@@ -254,17 +228,57 @@ const ResultSummary: React.FC = () => {
               <div>
                 <h4 className="font-medium text-lg mb-2">Loan-to-Income Ratio</h4>
                 <div className="text-3xl font-bold text-blue-800">
-                  {loanToIncomeRatio}x
+                  {currentLoanToIncomeRatio.toFixed(1)}x
                 </div>
                 <p className="text-sm text-gray-600 mt-1">
                   €{mockResultData.maxLoanAmount.toLocaleString()} ÷ €{mockResultData.incomeAnalysis.finalEstimate.annualIncome.toLocaleString()}
                 </p>
                 <p className="text-sm text-gray-500 mt-2">
-                  Falls within acceptable lending standards for sustainable mortgage payments.
+                  Target ratio: 5.0x for optimal lending standards
                 </p>
               </div>
             </div>
           </div>
+
+          {needsAdjustment && (
+            <Card className="bg-blue-50 border-blue-200">
+              <CardHeader>
+                <CardTitle className="text-lg text-blue-800 flex items-center gap-2">
+                  <Bot className="w-5 h-5" />
+                  AI Guidance for Loan Amount Adjustment
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <span className="text-sm text-blue-700">Current Ratio</span>
+                    <p className="text-xl font-bold text-blue-800">{currentLoanToIncomeRatio.toFixed(1)}x</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-blue-700">Target Ratio</span>
+                    <p className="text-xl font-bold text-blue-800">{targetRatio}x</p>
+                  </div>
+                </div>
+                
+                <div className="pt-4 border-t border-blue-200">
+                  <h4 className="font-medium text-blue-800 mb-2">Recommended Adjustment</h4>
+                  <div className="bg-white p-4 rounded border border-blue-200">
+                    <p className="text-sm text-blue-700 mb-2">
+                      <strong>Suggested Maximum Loan Amount:</strong> €{suggestedLoanAmount.toLocaleString()}
+                    </p>
+                    <p className="text-sm text-blue-600">
+                      To achieve the optimal 5x loan-to-income ratio based on the final income assessment of 
+                      €{mockResultData.incomeAnalysis.finalEstimate.annualIncome.toLocaleString()}, 
+                      the recommended maximum loan amount is €{suggestedLoanAmount.toLocaleString()}. 
+                      This {currentLoanToIncomeRatio > targetRatio ? 'reduces' : 'increases'} the current amount by 
+                      €{Math.abs(suggestedLoanAmount - mockResultData.maxLoanAmount).toLocaleString()} 
+                      to align with sustainable lending practices.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </CardContent>
       </Card>
     </div>
