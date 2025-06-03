@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,24 +25,24 @@ const ActionHub = () => {
       id: 'task-002',
       title: 'Property valuation confirmation',
       description: 'Confirm €580,000 valuation for Thomas Mueller property',
-      priority: 'medium',
-      type: 'ai-generated',
+      priority: 'medium' as const,
+      type: 'ai-generated' as const,
       applicationId: 'APP-2024-003',
       estimatedTime: 30,
       aiConfidence: 89,
       dueDate: '2025-06-03 17:00',
-      status: 'pending'
+      status: 'pending' as const
     },
     {
       id: 'task-003',
       title: 'Customer income clarification',
       description: 'Request additional documentation for freelance income',
-      priority: 'medium',
-      type: 'human-assigned',
+      priority: 'medium' as const,
+      type: 'human-assigned' as const,
       applicationId: 'APP-2024-002',
       estimatedTime: 10,
       dueDate: '2025-06-04 10:00',
-      status: 'pending'
+      status: 'pending' as const
     }
   ]);
 
