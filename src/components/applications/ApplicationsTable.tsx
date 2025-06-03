@@ -3,7 +3,7 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Zap, Eye, MessageSquare } from 'lucide-react';
+import { Zap, Eye } from 'lucide-react';
 import StatusBadge from '@/components/shared/StatusBadge';
 import ApplicationDetailView from '@/components/ApplicationDetailView';
 import { Application } from '@/hooks/useApplicationData';
@@ -76,24 +76,19 @@ const ApplicationsTable: React.FC<ApplicationsTableProps> = ({
               </div>
             </TableCell>
             <TableCell>
-              <div className="flex gap-2">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button size="sm" variant="outline" onClick={() => onSelectApplication(app)}>
-                      <Eye className="w-4 h-4" />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
-                    <DialogHeader>
-                      <DialogTitle>Application Details - {app.id}</DialogTitle>
-                    </DialogHeader>
-                    <ApplicationDetailView application={app} />
-                  </DialogContent>
-                </Dialog>
-                <Button size="sm" variant="outline">
-                  <MessageSquare className="w-4 h-4" />
-                </Button>
-              </div>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button size="sm" variant="outline" onClick={() => onSelectApplication(app)}>
+                    <Eye className="w-4 h-4" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Application Details - {app.id}</DialogTitle>
+                  </DialogHeader>
+                  <ApplicationDetailView application={app} />
+                </DialogContent>
+              </Dialog>
             </TableCell>
           </TableRow>
         ))}

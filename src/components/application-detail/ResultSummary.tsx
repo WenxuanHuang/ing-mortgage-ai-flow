@@ -2,8 +2,11 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrendingUp, Calculator, FileText, DollarSign, Shield, Bot } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const ResultSummary: React.FC = () => {
+  const navigate = useNavigate();
+  
   const mockResultData = {
     maxLoanAmount: 420000,
     requestedAmount: 450000,
@@ -58,6 +61,10 @@ const ResultSummary: React.FC = () => {
   const ratioDeviation = Math.abs(currentLoanToIncomeRatio - targetRatio);
   const needsAdjustment = ratioDeviation > 0.2;
 
+  const handleDocumentClick = (documentType: string) => {
+    navigate(`/document/${documentType.toLowerCase().replace(' ', '-')}`);
+  };
+
   return (
     <div className="space-y-6">
       <Card>
@@ -69,7 +76,10 @@ const ResultSummary: React.FC = () => {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="border border-gray-200">
+            <Card 
+              className="border border-gray-200 cursor-pointer hover:shadow-md transition-shadow"
+              onClick={() => handleDocumentClick('Bank Statement')}
+            >
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg flex items-center gap-2">
                   <FileText className="w-4 h-4" />
@@ -102,7 +112,10 @@ const ResultSummary: React.FC = () => {
               </CardContent>
             </Card>
 
-            <Card className="border border-gray-200">
+            <Card 
+              className="border border-gray-200 cursor-pointer hover:shadow-md transition-shadow"
+              onClick={() => handleDocumentClick('Payment Slip')}
+            >
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg flex items-center gap-2">
                   <DollarSign className="w-4 h-4" />
@@ -135,7 +148,10 @@ const ResultSummary: React.FC = () => {
               </CardContent>
             </Card>
 
-            <Card className="border border-gray-200">
+            <Card 
+              className="border border-gray-200 cursor-pointer hover:shadow-md transition-shadow"
+              onClick={() => handleDocumentClick('Employer Statement')}
+            >
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Shield className="w-4 h-4" />
