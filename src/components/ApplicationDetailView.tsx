@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -6,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { Input } from '@/components/ui/input';
-import { CheckCircle, AlertTriangle, Clock, FileText, User, Shield, Activity, Zap, Eye, Download, RefreshCw, Calculator, TrendingUp, DollarSign } from 'lucide-react';
+import { CheckCircle, AlertTriangle, Clock, FileText, User, Shield, Activity, Zap, Eye, Download, RefreshCw, Calculator, TrendingUp, DollarSign, Brain } from 'lucide-react';
 
 const ApplicationDetailView = ({ application }) => {
   const [overrideValues, setOverrideValues] = useState({});
@@ -374,12 +373,19 @@ const ApplicationDetailView = ({ application }) => {
           overallConfidence: 97,
           deviation: 1.2
         }
+      },
+      aiReasoning: {
+        primaryLimitingFactor: "income",
+        reasoning: "The maximum loan amount of €420,000 is primarily constrained by the applicant's annual income of €50,200. While the property value of €525,000 could theoretically support a higher loan amount, our lending criteria require that monthly payments do not exceed 40% of gross monthly income. With a gross monthly income of €4,200, the maximum sustainable monthly payment is €1,680, which corresponds to a loan amount of €420,000 at 3.2% interest over 30 years. The applicant's excellent credit score of 780 and stable employment history support this lending decision, but income remains the determining factor.",
+        incomeBasedMaxLoan: 420000,
+        propertyBasedMaxLoan: 446250, // 85% of 525,000
+        constrainingFactor: "Debt-to-income ratio limitation"
       }
     };
 
     return (
       <div className="space-y-6">
-        {/* Income Analysis - Now First */}
+        {/* Income Analysis - First */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -527,6 +533,48 @@ const ApplicationDetailView = ({ application }) => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            {/* AI Reasoning Section */}
+            <Card className="bg-blue-50 border-blue-200">
+              <CardHeader>
+                <CardTitle className="text-lg text-blue-800 flex items-center gap-2">
+                  <Brain className="w-5 h-5" />
+                  AI Decision Reasoning
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <span className="text-sm text-blue-700">Primary Limiting Factor</span>
+                    <p className="text-lg font-bold text-blue-800 capitalize">{mockResultData.aiReasoning.primaryLimitingFactor}</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-blue-700">Constraining Factor</span>
+                    <p className="text-lg font-bold text-blue-800">{mockResultData.aiReasoning.constrainingFactor}</p>
+                  </div>
+                </div>
+                
+                <div className="pt-4 border-t border-blue-200">
+                  <h4 className="font-medium text-blue-800 mb-3">Detailed Analysis</h4>
+                  <p className="text-sm text-blue-700 leading-relaxed">
+                    {mockResultData.aiReasoning.reasoning}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-blue-200">
+                  <div className="bg-white p-3 rounded-lg border">
+                    <span className="text-sm text-gray-600">Income-Based Max Loan</span>
+                    <p className="text-xl font-bold text-blue-800">€{mockResultData.aiReasoning.incomeBasedMaxLoan.toLocaleString()}</p>
+                    <span className="text-xs text-gray-500">Based on debt-to-income ratio</span>
+                  </div>
+                  <div className="bg-white p-3 rounded-lg border">
+                    <span className="text-sm text-gray-600">Property-Based Max Loan</span>
+                    <p className="text-xl font-bold text-gray-600">€{mockResultData.aiReasoning.propertyBasedMaxLoan.toLocaleString()}</p>
+                    <span className="text-xs text-gray-500">Based on 85% LTV ratio</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div>
