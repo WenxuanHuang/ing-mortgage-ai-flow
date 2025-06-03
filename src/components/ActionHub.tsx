@@ -7,46 +7,66 @@ import AISmartButton from './AISmartButton';
 import StatsOverview from './action-hub/StatsOverview';
 import TaskCard from './action-hub/TaskCard';
 
+interface Task {
+  id: string;
+  title: string;
+  description: string;
+  priority: 'high' | 'medium' | 'low' | 'critical';
+  type: 'ai-generated' | 'human-assigned';
+  applicationId: string;
+  estimatedTime: number;
+  aiConfidence?: number;
+  dueDate: string;
+  status: 'pending' | 'completed' | 'in-progress';
+}
+
+interface Stats {
+  avgConfidence: number;
+  overridesCount: number;
+  completedToday: number;
+  totalPending: number;
+}
+
 const ActionHub = () => {
-  const [tasks, setTasks] = useState([
+  const [tasks, setTasks] = useState<Task[]>([
     {
       id: 'task-001',
       title: 'Verify bank statement anomaly',
       description: 'AI detected unusual transaction pattern in Jan van Bergen\'s account',
-      priority: 'high' as const,
-      type: 'ai-generated' as const,
+      priority: 'high',
+      type: 'ai-generated',
       applicationId: 'APP-2024-001',
       estimatedTime: 15,
       aiConfidence: 73,
       dueDate: '2025-06-03 15:00',
-      status: 'pending' as const
+      status: 'pending'
     },
     {
       id: 'task-002',
       title: 'Property valuation confirmation',
       description: 'Confirm €580,000 valuation for Thomas Mueller property',
-      priority: 'medium' as const,
-      type: 'ai-generated' as const,
+      priority: 'medium',
+      type: 'ai-generated',
       applicationId: 'APP-2024-003',
       estimatedTime: 30,
       aiConfidence: 89,
       dueDate: '2025-06-03 17:00',
-      status: 'pending' as const
+      status: 'pending'
     },
     {
       id: 'task-003',
       title: 'Customer income clarification',
       description: 'Request additional documentation for freelance income',
-      priority: 'medium' as const,
-      type: 'human-assigned' as const,
+      priority: 'medium',
+      type: 'human-assigned',
       applicationId: 'APP-2024-002',
       estimatedTime: 10,
       dueDate: '2025-06-04 10:00',
-      status: 'pending' as const
+      status: 'pending'
     }
   ]);
 
-  const [stats, setStats] = useState({
+  const [stats, setStats] = useState<Stats>({
     avgConfidence: 84,
     overridesCount: 12,
     completedToday: 18,

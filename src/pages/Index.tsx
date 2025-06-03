@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -24,9 +25,11 @@ const Index = () => {
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">ING</span>
-            </div>
+            <img 
+              src="/lovable-uploads/00adf838-6a5b-44a4-8209-15d1a7bd01fe.png" 
+              alt="ING Logo" 
+              className="h-8"
+            />
             <h1 className="text-xl font-semibold text-gray-900">Mortgage Processing Portal</h1>
             <Badge variant="secondary" className="bg-green-100 text-green-800">
               <Zap className="w-3 h-3 mr-1" />
@@ -61,27 +64,27 @@ const Index = () => {
           <div className="p-4">
             <Tabs value={activeTab} onValueChange={setActiveTab} orientation="vertical" className="w-full">
               <TabsList className="grid w-full grid-rows-6 h-auto bg-gray-50">
-                <TabsTrigger value="dashboard" className="justify-start data-[state=active]:bg-orange-50 data-[state=active]:text-orange-700">
+                <TabsTrigger value="dashboard" className="justify-start data-[state=active]:bg-ing-orange data-[state=active]:text-white">
                   <TrendingUp className="w-4 h-4 mr-2" />
                   Dashboard
                 </TabsTrigger>
-                <TabsTrigger value="applications" className="justify-start data-[state=active]:bg-orange-50 data-[state=active]:text-orange-700">
+                <TabsTrigger value="applications" className="justify-start data-[state=active]:bg-ing-orange data-[state=active]:text-white">
                   <FileText className="w-4 h-4 mr-2" />
                   Applications
                 </TabsTrigger>
-                <TabsTrigger value="agent-nexus" className="justify-start data-[state=active]:bg-orange-50 data-[state=active]:text-orange-700">
+                <TabsTrigger value="agent-nexus" className="justify-start data-[state=active]:bg-ing-orange data-[state=active]:text-white">
                   <Brain className="w-4 h-4 mr-2" />
                   Agent Nexus
                 </TabsTrigger>
-                <TabsTrigger value="action-hub" className="justify-start data-[state=active]:bg-orange-50 data-[state=active]:text-orange-700">
+                <TabsTrigger value="action-hub" className="justify-start data-[state=active]:bg-ing-orange data-[state=active]:text-white">
                   <CheckSquare className="w-4 h-4 mr-2" />
                   Action Hub
                 </TabsTrigger>
-                <TabsTrigger value="documents" className="justify-start data-[state=active]:bg-orange-50 data-[state=active]:text-orange-700">
+                <TabsTrigger value="documents" className="justify-start data-[state=active]:bg-ing-orange data-[state=active]:text-white">
                   <FileText className="w-4 h-4 mr-2" />
                   Document Processing
                 </TabsTrigger>
-                <TabsTrigger value="communications" className="justify-start data-[state=active]:bg-orange-50 data-[state=active]:text-orange-700">
+                <TabsTrigger value="communications" className="justify-start data-[state=active]:bg-ing-orange data-[state=active]:text-white">
                   <Users className="w-4 h-4 mr-2" />
                   Customer Comms
                 </TabsTrigger>
