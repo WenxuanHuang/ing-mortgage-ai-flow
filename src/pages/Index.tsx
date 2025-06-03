@@ -3,20 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Bell, FileText, Users, TrendingUp, AlertCircle, CheckCircle, Clock, Zap, Brain, CheckSquare } from 'lucide-react';
-import DashboardOverview from '@/components/DashboardOverview';
-import DocumentProcessor from '@/components/DocumentProcessor';
-import CustomerCommunications from '@/components/CustomerCommunications';
-import AIAgentStatus from '@/components/AIAgentStatus';
+import { Bell, FileText, Zap } from 'lucide-react';
 import ApplicationsList from '@/components/ApplicationsList';
-import AgentNexus from '@/components/AgentNexus';
-import ActionHub from '@/components/ActionHub';
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState('dashboard');
   const [notifications, setNotifications] = useState(3);
 
   return (
@@ -62,69 +53,18 @@ const Index = () => {
         {/* Sidebar */}
         <nav className="w-64 bg-white border-r border-gray-200 min-h-screen">
           <div className="p-4">
-            <Tabs value={activeTab} onValueChange={setActiveTab} orientation="vertical" className="w-full">
-              <TabsList className="grid w-full grid-rows-6 h-auto bg-gray-50">
-                <TabsTrigger value="dashboard" className="justify-start data-[state=active]:bg-ing-orange data-[state=active]:text-white">
-                  <TrendingUp className="w-4 h-4 mr-2" />
-                  Dashboard
-                </TabsTrigger>
-                <TabsTrigger value="applications" className="justify-start data-[state=active]:bg-ing-orange data-[state=active]:text-white">
-                  <FileText className="w-4 h-4 mr-2" />
-                  Applications
-                </TabsTrigger>
-                <TabsTrigger value="agent-nexus" className="justify-start data-[state=active]:bg-ing-orange data-[state=active]:text-white">
-                  <Brain className="w-4 h-4 mr-2" />
-                  Agent Nexus
-                </TabsTrigger>
-                <TabsTrigger value="action-hub" className="justify-start data-[state=active]:bg-ing-orange data-[state=active]:text-white">
-                  <CheckSquare className="w-4 h-4 mr-2" />
-                  Action Hub
-                </TabsTrigger>
-                <TabsTrigger value="documents" className="justify-start data-[state=active]:bg-ing-orange data-[state=active]:text-white">
-                  <FileText className="w-4 h-4 mr-2" />
-                  Document Processing
-                </TabsTrigger>
-                <TabsTrigger value="communications" className="justify-start data-[state=active]:bg-ing-orange data-[state=active]:text-white">
-                  <Users className="w-4 h-4 mr-2" />
-                  Customer Comms
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-          
-          {/* AI Agent Status Sidebar */}
-          <div className="p-4 border-t">
-            <AIAgentStatus />
+            <div className="bg-gray-50 rounded-lg p-4">
+              <div className="flex items-center gap-2 text-orange-600">
+                <FileText className="w-4 h-4" />
+                <span className="font-medium text-sm">Applications</span>
+              </div>
+            </div>
           </div>
         </nav>
 
         {/* Content Area */}
         <main className="flex-1 p-6">
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsContent value="dashboard">
-              <DashboardOverview />
-            </TabsContent>
-            
-            <TabsContent value="applications">
-              <ApplicationsList />
-            </TabsContent>
-
-            <TabsContent value="agent-nexus">
-              <AgentNexus />
-            </TabsContent>
-
-            <TabsContent value="action-hub">
-              <ActionHub />
-            </TabsContent>
-            
-            <TabsContent value="documents">
-              <DocumentProcessor />
-            </TabsContent>
-            
-            <TabsContent value="communications">
-              <CustomerCommunications />
-            </TabsContent>
-          </Tabs>
+          <ApplicationsList />
         </main>
       </div>
     </div>

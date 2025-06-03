@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 
 export interface Application {
@@ -101,30 +102,6 @@ export const useApplicationData = () => {
       fastTrack: true,
       submittedDate: '2024-01-13',
       aiConfidence: 92
-    },
-    {
-      id: 'APP-2024-004',
-      customer: 'Sophie Dubois',
-      email: 'sophie.dubois@email.fr',
-      amount: '€275,000',
-      status: 'Compliance Check',
-      risk: 'Low',
-      progress: 85,
-      fastTrack: false,
-      submittedDate: '2024-01-12',
-      aiConfidence: 96
-    },
-    {
-      id: 'APP-2024-005',
-      customer: 'Lars Andersen',
-      email: 'lars.andersen@email.dk',
-      amount: '€420,000',
-      status: 'Pending Documents',
-      risk: 'High',
-      progress: 25,
-      fastTrack: false,
-      submittedDate: '2024-01-11',
-      aiConfidence: 73
     }
   ]);
 
