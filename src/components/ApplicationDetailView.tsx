@@ -383,6 +383,9 @@ const ApplicationDetailView = ({ application }) => {
       }
     };
 
+    // Calculate the loan-to-income ratio
+    const loanToIncomeRatio = (mockResultData.maxLoanAmount / mockResultData.incomeAnalysis.finalEstimate.annualIncome).toFixed(1);
+
     return (
       <div className="space-y-6">
         {/* Income Analysis - First */}
@@ -551,12 +554,20 @@ const ApplicationDetailView = ({ application }) => {
                     <span className="text-sm text-blue-700">Constraining Factor</span>
                     <p className="text-lg font-bold text-blue-800">{mockResultData.aiReasoning.constrainingFactor}</p>
                   </div>
+                  <div>
+                    <span className="text-sm text-blue-700">Loan-to-Income Ratio</span>
+                    <p className="text-lg font-bold text-blue-800">{loanToIncomeRatio}x</p>
+                    <span className="text-xs text-blue-600">€{mockResultData.maxLoanAmount.toLocaleString()} ÷ €{mockResultData.incomeAnalysis.finalEstimate.annualIncome.toLocaleString()}</span>
+                  </div>
                 </div>
                 
                 <div className="pt-4 border-t border-blue-200">
                   <h4 className="font-medium text-blue-800 mb-3">Detailed Analysis</h4>
                   <p className="text-sm text-blue-700 leading-relaxed">
                     {mockResultData.aiReasoning.reasoning}
+                  </p>
+                  <p className="text-sm text-blue-700 leading-relaxed mt-2">
+                    The loan-to-income ratio of {loanToIncomeRatio}x (€{mockResultData.maxLoanAmount.toLocaleString()} ÷ €{mockResultData.incomeAnalysis.finalEstimate.annualIncome.toLocaleString()}) falls within acceptable lending standards, ensuring the applicant can sustainably manage the mortgage payments.
                   </p>
                 </div>
 
