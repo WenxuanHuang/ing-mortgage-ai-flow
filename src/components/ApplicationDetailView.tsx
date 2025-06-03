@@ -177,14 +177,6 @@ const ApplicationDetailView = ({ application }) => {
     ];
 
     const DataValidation = ({ field }) => {
-      const [isEditing, setIsEditing] = useState(false);
-      const [editValue, setEditValue] = useState(field.value);
-
-      const handleOverride = () => {
-        setOverrideValues({ ...overrideValues, [field.name]: editValue });
-        setIsEditing(false);
-      };
-
       return (
         <div className="border rounded-lg p-4 space-y-3">
           <div className="flex justify-between items-start">
@@ -208,28 +200,6 @@ const ApplicationDetailView = ({ application }) => {
               <span className="text-sm font-medium text-gray-600">AI Extraction:</span>
               <p className="font-medium">{field.value}</p>
             </div>
-            
-            {isEditing ? (
-              <div className="space-y-2">
-                <Input
-                  value={editValue}
-                  onChange={(e) => setEditValue(e.target.value)}
-                  className="w-full"
-                />
-                <div className="flex gap-2">
-                  <Button size="sm" onClick={handleOverride}>
-                    Submit Correction
-                  </Button>
-                  <Button size="sm" variant="outline" onClick={() => setIsEditing(false)}>
-                    Cancel
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              <Button size="sm" variant="outline" onClick={() => setIsEditing(true)}>
-                Override Value
-              </Button>
-            )}
           </div>
         </div>
       );
@@ -352,25 +322,37 @@ const ApplicationDetailView = ({ application }) => {
       incomeAnalysis: {
         bankStatement: {
           estimatedAnnualIncome: 49800,
-          confidence: 94,
           monthsAnalyzed: 12,
-          averageMonthlyIncome: 4150
+          averageMonthlyIncome: 4150,
+          incomeComponents: {
+            salary: 42000,
+            bonuses: 3600,
+            otherIncome: 4200
+          }
         },
         paymentSlip: {
           estimatedAnnualIncome: 50400,
-          confidence: 98,
           grossMonthlySalary: 4200,
-          netMonthlySalary: 3150
+          netMonthlySalary: 3150,
+          incomeComponents: {
+            baseSalary: 48000,
+            holidayAllowance: 2400,
+            other: 0
+          }
         },
         employerStatement: {
           estimatedAnnualIncome: 50400,
-          confidence: 100,
           officialAnnualSalary: 50400,
-          bonuses: 0
+          bonuses: 0,
+          incomeComponents: {
+            annualSalary: 50400,
+            variableCompensation: 0,
+            benefits: 0
+          }
         },
         finalEstimate: {
           annualIncome: 50200,
-          overallConfidence: 97,
+          overallConfidence: 98.8, // 100% - 1.2% deviation
           deviation: 1.2
         }
       },
@@ -419,12 +401,24 @@ const ApplicationDetailView = ({ application }) => {
                     <span className="text-sm text-gray-600">Analysis Period</span>
                     <p className="font-medium">{mockResultData.incomeAnalysis.bankStatement.monthsAnalyzed} months</p>
                   </div>
-                  <div className="pt-2">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-sm text-gray-600">Confidence</span>
-                      <span className="text-sm font-medium">{mockResultData.incomeAnalysis.bankStatement.confidence}%</span>
+                  
+                  {/* Income Component Breakdown */}
+                  <div className="pt-3 border-t border-gray-200">
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">Income Components</h4>
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Salary:</span>
+                        <span className="font-medium">€{mockResultData.incomeAnalysis.bankStatement.incomeComponents.salary.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Bonuses:</span>
+                        <span className="font-medium">€{mockResultData.incomeAnalysis.bankStatement.incomeComponents.bonuses.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Other Income:</span>
+                        <span className="font-medium">€{mockResultData.incomeAnalysis.bankStatement.incomeComponents.otherIncome.toLocaleString()}</span>
+                      </div>
                     </div>
-                    <Progress value={mockResultData.incomeAnalysis.bankStatement.confidence} className="h-2" />
                   </div>
                 </CardContent>
               </Card>
@@ -450,12 +444,24 @@ const ApplicationDetailView = ({ application }) => {
                     <span className="text-sm text-gray-600">Net Monthly</span>
                     <p className="font-medium">€{mockResultData.incomeAnalysis.paymentSlip.netMonthlySalary}</p>
                   </div>
-                  <div className="pt-2">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-sm text-gray-600">Confidence</span>
-                      <span className="text-sm font-medium">{mockResultData.incomeAnalysis.paymentSlip.confidence}%</span>
+                  
+                  {/* Income Component Breakdown */}
+                  <div className="pt-3 border-t border-gray-200">
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">Income Components</h4>
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Base Salary:</span>
+                        <span className="font-medium">€{mockResultData.incomeAnalysis.paymentSlip.incomeComponents.baseSalary.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Holiday Allowance:</span>
+                        <span className="font-medium">€{mockResultData.incomeAnalysis.paymentSlip.incomeComponents.holidayAllowance.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Other:</span>
+                        <span className="font-medium">€{mockResultData.incomeAnalysis.paymentSlip.incomeComponents.other}</span>
+                      </div>
                     </div>
-                    <Progress value={mockResultData.incomeAnalysis.paymentSlip.confidence} className="h-2" />
                   </div>
                 </CardContent>
               </Card>
@@ -481,12 +487,24 @@ const ApplicationDetailView = ({ application }) => {
                     <span className="text-sm text-gray-600">Annual Bonuses</span>
                     <p className="font-medium">€{mockResultData.incomeAnalysis.employerStatement.bonuses}</p>
                   </div>
-                  <div className="pt-2">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-sm text-gray-600">Confidence</span>
-                      <span className="text-sm font-medium">{mockResultData.incomeAnalysis.employerStatement.confidence}%</span>
+                  
+                  {/* Income Component Breakdown */}
+                  <div className="pt-3 border-t border-gray-200">
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">Income Components</h4>
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Annual Salary:</span>
+                        <span className="font-medium">€{mockResultData.incomeAnalysis.employerStatement.incomeComponents.annualSalary.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Variable Comp:</span>
+                        <span className="font-medium">€{mockResultData.incomeAnalysis.employerStatement.incomeComponents.variableCompensation}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Benefits:</span>
+                        <span className="font-medium">€{mockResultData.incomeAnalysis.employerStatement.incomeComponents.benefits}</span>
+                      </div>
                     </div>
-                    <Progress value={mockResultData.incomeAnalysis.employerStatement.confidence} className="h-2" />
                   </div>
                 </CardContent>
               </Card>
@@ -517,9 +535,9 @@ const ApplicationDetailView = ({ application }) => {
                   <h4 className="font-medium text-green-800 mb-2">Analysis Summary</h4>
                   <p className="text-sm text-green-700">
                     The three income verification documents show excellent consistency with only {mockResultData.incomeAnalysis.finalEstimate.deviation}% deviation. 
-                    The employer statement provides the most authoritative source ({mockResultData.incomeAnalysis.employerStatement.confidence}% confidence), 
+                    The employer statement provides the most authoritative source, 
                     while bank statement analysis over {mockResultData.incomeAnalysis.bankStatement.monthsAnalyzed} months confirms sustained income patterns. 
-                    This high confidence score of {mockResultData.incomeAnalysis.finalEstimate.overallConfidence}% supports the lending decision.
+                    This high confidence score of {mockResultData.incomeAnalysis.finalEstimate.overallConfidence}% (calculated as 100% - {mockResultData.incomeAnalysis.finalEstimate.deviation}% deviation) supports the lending decision.
                   </p>
                 </div>
               </CardContent>
@@ -536,56 +554,6 @@ const ApplicationDetailView = ({ application }) => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* AI Reasoning Section */}
-            <Card className="bg-blue-50 border-blue-200">
-              <CardHeader>
-                <CardTitle className="text-lg text-blue-800 flex items-center gap-2">
-                  <Brain className="w-5 h-5" />
-                  AI Decision Reasoning
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <span className="text-sm text-blue-700">Primary Limiting Factor</span>
-                    <p className="text-lg font-bold text-blue-800 capitalize">{mockResultData.aiReasoning.primaryLimitingFactor}</p>
-                  </div>
-                  <div>
-                    <span className="text-sm text-blue-700">Constraining Factor</span>
-                    <p className="text-lg font-bold text-blue-800">{mockResultData.aiReasoning.constrainingFactor}</p>
-                  </div>
-                  <div>
-                    <span className="text-sm text-blue-700">Loan-to-Income Ratio</span>
-                    <p className="text-lg font-bold text-blue-800">{loanToIncomeRatio}x</p>
-                    <span className="text-xs text-blue-600">€{mockResultData.maxLoanAmount.toLocaleString()} ÷ €{mockResultData.incomeAnalysis.finalEstimate.annualIncome.toLocaleString()}</span>
-                  </div>
-                </div>
-                
-                <div className="pt-4 border-t border-blue-200">
-                  <h4 className="font-medium text-blue-800 mb-3">Detailed Analysis</h4>
-                  <p className="text-sm text-blue-700 leading-relaxed">
-                    {mockResultData.aiReasoning.reasoning}
-                  </p>
-                  <p className="text-sm text-blue-700 leading-relaxed mt-2">
-                    The loan-to-income ratio of {loanToIncomeRatio}x (€{mockResultData.maxLoanAmount.toLocaleString()} ÷ €{mockResultData.incomeAnalysis.finalEstimate.annualIncome.toLocaleString()}) falls within acceptable lending standards, ensuring the applicant can sustainably manage the mortgage payments.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-blue-200">
-                  <div className="bg-white p-3 rounded-lg border">
-                    <span className="text-sm text-gray-600">Income-Based Max Loan</span>
-                    <p className="text-xl font-bold text-blue-800">€{mockResultData.aiReasoning.incomeBasedMaxLoan.toLocaleString()}</p>
-                    <span className="text-xs text-gray-500">Based on debt-to-income ratio</span>
-                  </div>
-                  <div className="bg-white p-3 rounded-lg border">
-                    <span className="text-sm text-gray-600">Property-Based Max Loan</span>
-                    <p className="text-xl font-bold text-gray-600">€{mockResultData.aiReasoning.propertyBasedMaxLoan.toLocaleString()}</p>
-                    <span className="text-xs text-gray-500">Based on 85% LTV ratio</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div>
@@ -602,50 +570,20 @@ const ApplicationDetailView = ({ application }) => {
                     </Badge>
                   )}
                 </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <span className="text-sm text-gray-600">Monthly Payment</span>
-                    <p className="font-semibold">€{mockResultData.monthlyPayment}</p>
-                  </div>
-                  <div>
-                    <span className="text-sm text-gray-600">Interest Rate</span>
-                    <p className="font-semibold">{mockResultData.interestRate}%</p>
-                  </div>
-                  <div>
-                    <span className="text-sm text-gray-600">Loan-to-Value</span>
-                    <p className="font-semibold">{mockResultData.loanToValue}%</p>
-                  </div>
-                  <div>
-                    <span className="text-sm text-gray-600">Term</span>
-                    <p className="font-semibold">{mockResultData.loanTerm} years</p>
-                  </div>
-                </div>
               </div>
 
               <div className="space-y-4">
-                <h4 className="font-medium">Calculation Rationale</h4>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Gross Monthly Income:</span>
-                    <span className="font-medium">€{mockResultData.rationale.grossMonthlyIncome}</span>
+                <div>
+                  <h4 className="font-medium text-lg mb-2">Loan-to-Income Ratio</h4>
+                  <div className="text-3xl font-bold text-blue-800">
+                    {loanToIncomeRatio}x
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Debt-to-Income Ratio:</span>
-                    <span className="font-medium">{mockResultData.rationale.debtToIncomeRatio}%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Credit Score:</span>
-                    <span className="font-medium">{mockResultData.rationale.creditScore}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Down Payment:</span>
-                    <span className="font-medium">€{mockResultData.rationale.downPayment.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Monthly Expenses:</span>
-                    <span className="font-medium">€{mockResultData.rationale.monthlyExpenses}</span>
-                  </div>
+                  <p className="text-sm text-gray-600 mt-1">
+                    €{mockResultData.maxLoanAmount.toLocaleString()} ÷ €{mockResultData.incomeAnalysis.finalEstimate.annualIncome.toLocaleString()}
+                  </p>
+                  <p className="text-sm text-gray-500 mt-2">
+                    Falls within acceptable lending standards for sustainable mortgage payments.
+                  </p>
                 </div>
               </div>
             </div>
