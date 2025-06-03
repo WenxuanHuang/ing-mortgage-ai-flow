@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -6,11 +5,16 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Search, Filter, Zap, Eye, MessageSquare } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Progress } from '@/components/ui/progress';
+import { Search, Filter, Zap, Eye, MessageSquare, CheckCircle, AlertTriangle, Clock, FileText, User, Shield } from 'lucide-react';
+import ApplicationDetailView from '@/components/ApplicationDetailView';
 
 const ApplicationsList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [selectedApplication, setSelectedApplication] = useState(null);
 
   const applications = [
     {
@@ -23,7 +27,25 @@ const ApplicationsList = () => {
       progress: 75,
       fastTrack: true,
       submittedDate: '2024-01-15',
-      aiConfidence: 94
+      aiConfidence: 94,
+      agents: {
+        documentIntake: 100,
+        riskAssessment: 85,
+        compliance: 90,
+        communication: 60
+      },
+      agentLogs: [
+        { timestamp: '2025-06-03 09:15', message: 'Cross-referenced Ockto-validated salary data with uploaded PDF (98% match confidence)', type: 'success' },
+        { timestamp: '2025-06-03 09:12', message: 'Document authenticity verified via PDF metadata analysis', type: 'success' },
+        { timestamp: '2025-06-03 09:10', message: 'Processing bank statement anomaly detected', type: 'warning' }
+      ],
+      tasks: [
+        { id: 1, description: 'Salary validation against Ockto data', status: 'done', agent: 'AI', confidence: 98 },
+        { id: 2, description: 'Initial debt-to-income calculation', status: 'done', agent: 'AI', confidence: 95 },
+        { id: 3, description: 'Document authenticity check via PDF metadata', status: 'done', agent: 'AI', confidence: 100 },
+        { id: 4, description: 'Verify 3-month bank statement anomaly', status: 'pending', agent: 'Human', flaggedBy: 'AI' },
+        { id: 5, description: 'Confirm property valuation exception', status: 'pending', agent: 'Human', confidence: 89 }
+      ]
     },
     {
       id: 'APP-2024-002',
@@ -35,7 +57,21 @@ const ApplicationsList = () => {
       progress: 45,
       fastTrack: false,
       submittedDate: '2024-01-14',
-      aiConfidence: 87
+      aiConfidence: 87,
+      agents: {
+        documentIntake: 80,
+        riskAssessment: 60,
+        compliance: 75,
+        communication: 40
+      },
+      agentLogs: [
+        { timestamp: '2025-06-03 08:45', message: 'Employment verification in progress', type: 'info' },
+        { timestamp: '2025-06-03 08:30', message: 'Credit history analysis completed', type: 'success' }
+      ],
+      tasks: [
+        { id: 1, description: 'Employment verification', status: 'in-progress', agent: 'AI', confidence: 87 },
+        { id: 2, description: 'Credit history analysis', status: 'done', agent: 'AI', confidence: 92 }
+      ]
     },
     {
       id: 'APP-2024-003',
@@ -75,7 +111,7 @@ const ApplicationsList = () => {
     }
   ];
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status) => {
     switch (status) {
       case 'AI Processing': return 'bg-blue-100 text-blue-800';
       case 'Document Review': return 'bg-yellow-100 text-yellow-800';
@@ -86,7 +122,7 @@ const ApplicationsList = () => {
     }
   };
 
-  const getRiskColor = (risk: string) => {
+  const getRiskColor = (risk) => {
     switch (risk) {
       case 'Low': return 'bg-green-100 text-green-800';
       case 'Medium': return 'bg-yellow-100 text-yellow-800';
@@ -211,9 +247,19 @@ const ApplicationsList = () => {
                   </TableCell>
                   <TableCell>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="outline">
-                        <Eye className="w-4 h-4" />
-                      </Button>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button size="sm" variant="outline" onClick={() => setSelectedApplication(app)}>
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+                          <DialogHeader>
+                            <DialogTitle>Application Details - {app.id}</DialogTitle>
+                          </DialogHeader>
+                          <ApplicationDetailView application={app} />
+                        </DialogContent>
+                      </Dialog>
                       <Button size="sm" variant="outline">
                         <MessageSquare className="w-4 h-4" />
                       </Button>
