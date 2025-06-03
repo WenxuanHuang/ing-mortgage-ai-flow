@@ -1,135 +1,16 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Progress } from '@/components/ui/progress';
-import { Search, Filter, Zap, Eye, MessageSquare, CheckCircle, AlertTriangle, Clock, FileText, User, Shield } from 'lucide-react';
-import ApplicationDetailView from '@/components/ApplicationDetailView';
+import ApplicationsFilters from '@/components/applications/ApplicationsFilters';
+import ApplicationsTable from '@/components/applications/ApplicationsTable';
+import { useApplicationData } from '@/hooks/useApplicationData';
 
 const ApplicationsList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [selectedApplication, setSelectedApplication] = useState(null);
-
-  const applications = [
-    {
-      id: 'APP-2024-001',
-      customer: 'Jan van Bergen',
-      email: 'jan.vanbergen@email.nl',
-      amount: '€450,000',
-      status: 'AI Processing',
-      risk: 'Low',
-      progress: 75,
-      fastTrack: true,
-      submittedDate: '2024-01-15',
-      aiConfidence: 94,
-      agents: {
-        documentIntake: 100,
-        riskAssessment: 85,
-        compliance: 90,
-        communication: 60
-      },
-      agentLogs: [
-        { timestamp: '2025-06-03 09:15', message: 'Cross-referenced Ockto-validated salary data with uploaded PDF (98% match confidence)', type: 'success' },
-        { timestamp: '2025-06-03 09:12', message: 'Document authenticity verified via PDF metadata analysis', type: 'success' },
-        { timestamp: '2025-06-03 09:10', message: 'Processing bank statement anomaly detected', type: 'warning' }
-      ],
-      tasks: [
-        { id: 1, description: 'Salary validation against Ockto data', status: 'done', agent: 'AI', confidence: 98 },
-        { id: 2, description: 'Initial debt-to-income calculation', status: 'done', agent: 'AI', confidence: 95 },
-        { id: 3, description: 'Document authenticity check via PDF metadata', status: 'done', agent: 'AI', confidence: 100 },
-        { id: 4, description: 'Verify 3-month bank statement anomaly', status: 'pending', agent: 'Human', flaggedBy: 'AI' },
-        { id: 5, description: 'Confirm property valuation exception', status: 'pending', agent: 'Human', confidence: 89 }
-      ]
-    },
-    {
-      id: 'APP-2024-002',
-      customer: 'Maria Silva',
-      email: 'maria.silva@email.com',
-      amount: '€320,000',
-      status: 'Document Review',
-      risk: 'Medium',
-      progress: 45,
-      fastTrack: false,
-      submittedDate: '2024-01-14',
-      aiConfidence: 87,
-      agents: {
-        documentIntake: 80,
-        riskAssessment: 60,
-        compliance: 75,
-        communication: 40
-      },
-      agentLogs: [
-        { timestamp: '2025-06-03 08:45', message: 'Employment verification in progress', type: 'info' },
-        { timestamp: '2025-06-03 08:30', message: 'Credit history analysis completed', type: 'success' }
-      ],
-      tasks: [
-        { id: 1, description: 'Employment verification', status: 'in-progress', agent: 'AI', confidence: 87 },
-        { id: 2, description: 'Credit history analysis', status: 'done', agent: 'AI', confidence: 92 }
-      ]
-    },
-    {
-      id: 'APP-2024-003',
-      customer: 'Thomas Mueller',
-      email: 'thomas.mueller@email.de',
-      amount: '€580,000',
-      status: 'Risk Assessment',
-      risk: 'Low',
-      progress: 60,
-      fastTrack: true,
-      submittedDate: '2024-01-13',
-      aiConfidence: 92
-    },
-    {
-      id: 'APP-2024-004',
-      customer: 'Sophie Dubois',
-      email: 'sophie.dubois@email.fr',
-      amount: '€275,000',
-      status: 'Compliance Check',
-      risk: 'Low',
-      progress: 85,
-      fastTrack: false,
-      submittedDate: '2024-01-12',
-      aiConfidence: 96
-    },
-    {
-      id: 'APP-2024-005',
-      customer: 'Lars Andersen',
-      email: 'lars.andersen@email.dk',
-      amount: '€420,000',
-      status: 'Pending Documents',
-      risk: 'High',
-      progress: 25,
-      fastTrack: false,
-      submittedDate: '2024-01-11',
-      aiConfidence: 73
-    }
-  ];
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'AI Processing': return 'bg-blue-100 text-blue-800';
-      case 'Document Review': return 'bg-yellow-100 text-yellow-800';
-      case 'Risk Assessment': return 'bg-purple-100 text-purple-800';
-      case 'Compliance Check': return 'bg-orange-100 text-orange-800';
-      case 'Pending Documents': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getRiskColor = (risk) => {
-    switch (risk) {
-      case 'Low': return 'bg-green-100 text-green-800';
-      case 'Medium': return 'bg-yellow-100 text-yellow-800';
-      case 'High': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
+  const { applications } = useApplicationData();
 
   const filteredApplications = applications.filter(app => {
     const matchesSearch = app.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -147,128 +28,22 @@ const ApplicationsList = () => {
         </Button>
       </div>
 
-      {/* Filters */}
-      <Card>
-        <CardContent className="p-4">
-          <div className="flex gap-4 items-center">
-            <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <Input
-                placeholder="Search applications..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-            <Select value={filterStatus} onValueChange={setFilterStatus}>
-              <SelectTrigger className="w-48">
-                <Filter className="w-4 h-4 mr-2" />
-                <SelectValue placeholder="Filter by status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="AI Processing">AI Processing</SelectItem>
-                <SelectItem value="Document Review">Document Review</SelectItem>
-                <SelectItem value="Risk Assessment">Risk Assessment</SelectItem>
-                <SelectItem value="Compliance Check">Compliance Check</SelectItem>
-                <SelectItem value="Pending Documents">Pending Documents</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </CardContent>
-      </Card>
+      <ApplicationsFilters
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        filterStatus={filterStatus}
+        setFilterStatus={setFilterStatus}
+      />
 
-      {/* Applications Table */}
       <Card>
         <CardHeader>
           <CardTitle>Applications ({filteredApplications.length})</CardTitle>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Application ID</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Risk Level</TableHead>
-                <TableHead>AI Confidence</TableHead>
-                <TableHead>Progress</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredApplications.map((app) => (
-                <TableRow key={app.id} className="hover:bg-gray-50">
-                  <TableCell className="font-medium">
-                    <div className="flex items-center gap-2">
-                      {app.fastTrack && <Zap className="w-4 h-4 text-orange-500" />}
-                      {app.id}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div>
-                      <p className="font-medium">{app.customer}</p>
-                      <p className="text-sm text-gray-500">{app.email}</p>
-                    </div>
-                  </TableCell>
-                  <TableCell className="font-medium">{app.amount}</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary" className={getStatusColor(app.status)}>
-                      {app.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="secondary" className={getRiskColor(app.risk)}>
-                      {app.risk}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">{app.aiConfidence}%</span>
-                      <div className={`w-2 h-2 rounded-full ${
-                        app.aiConfidence >= 90 ? 'bg-green-500' :
-                        app.aiConfidence >= 80 ? 'bg-yellow-500' : 'bg-red-500'
-                      }`} />
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="w-full max-w-[100px]">
-                      <div className="flex justify-between text-xs text-gray-600 mb-1">
-                        <span>{app.progress}%</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div
-                          className="bg-orange-500 h-2 rounded-full"
-                          style={{ width: `${app.progress}%` }}
-                        />
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button size="sm" variant="outline" onClick={() => setSelectedApplication(app)}>
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
-                          <DialogHeader>
-                            <DialogTitle>Application Details - {app.id}</DialogTitle>
-                          </DialogHeader>
-                          <ApplicationDetailView application={app} />
-                        </DialogContent>
-                      </Dialog>
-                      <Button size="sm" variant="outline">
-                        <MessageSquare className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <ApplicationsTable
+            applications={filteredApplications}
+            onSelectApplication={setSelectedApplication}
+          />
         </CardContent>
       </Card>
     </div>

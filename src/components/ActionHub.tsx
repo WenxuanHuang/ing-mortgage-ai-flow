@@ -1,38 +1,24 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { CheckSquare, Clock, AlertTriangle, Brain, TrendingUp, Users } from 'lucide-react';
+import { CheckSquare } from 'lucide-react';
 import AISmartButton from './AISmartButton';
-
-interface Task {
-  id: string;
-  title: string;
-  description: string;
-  priority: 'low' | 'medium' | 'high' | 'critical';
-  type: 'ai-generated' | 'human-assigned' | 'system-alert';
-  applicationId: string;
-  estimatedTime: number;
-  aiConfidence?: number;
-  dueDate: string;
-  status: 'pending' | 'in-progress' | 'completed' | 'overdue';
-}
+import StatsOverview from './action-hub/StatsOverview';
+import TaskCard from './action-hub/TaskCard';
 
 const ActionHub = () => {
-  const [tasks, setTasks] = useState<Task[]>([
+  const [tasks, setTasks] = useState([
     {
       id: 'task-001',
       title: 'Verify bank statement anomaly',
       description: 'AI detected unusual transaction pattern in Jan van Bergen\'s account',
-      priority: 'high',
-      type: 'ai-generated',
+      priority: 'high' as const,
+      type: 'ai-generated' as const,
       applicationId: 'APP-2024-001',
       estimatedTime: 15,
       aiConfidence: 73,
       dueDate: '2025-06-03 15:00',
-      status: 'pending'
+      status: 'pending' as const
     },
     {
       id: 'task-002',
@@ -66,29 +52,10 @@ const ActionHub = () => {
     totalPending: 6
   });
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'critical': return 'bg-red-100 text-red-800';
-      case 'high': return 'bg-orange-100 text-orange-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'ai-generated': return <Brain className="w-4 h-4 text-blue-500" />;
-      case 'human-assigned': return <Users className="w-4 h-4 text-purple-500" />;
-      case 'system-alert': return <AlertTriangle className="w-4 h-4 text-red-500" />;
-      default: return <CheckSquare className="w-4 h-4 text-gray-500" />;
-    }
-  };
-
   const handleTaskCompletion = (taskId: string) => {
     setTasks(prev => prev.map(task => 
       task.id === taskId 
-        ? { ...task, status: 'completed' }
+        ? { ...task, status: 'completed' as const }
         : task
     ));
     setStats(prev => ({
@@ -98,14 +65,7 @@ const ActionHub = () => {
     }));
   };
 
-  const calculatePriority = (task: Task) => {
-    const riskScore = task.aiConfidence ? (100 - task.aiConfidence) / 100 : 0.5;
-    const timeWeight = task.estimatedTime / 60; // Convert to hours
-    const priorityWeights = { critical: 4, high: 3, medium: 2, low: 1 };
-    return (riskScore * priorityWeights[task.priority]) / timeWeight;
-  };
-
-  const sortedTasks = [...tasks].sort((a, b) => calculatePriority(b) - calculatePriority(a));
+  const pendingTasks = tasks.filter(task => task.status === 'pending');
 
   return (
     <div className="space-y-6">
@@ -119,35 +79,8 @@ const ActionHub = () => {
         </div>
       </div>
 
-      {/* Stats Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-blue-600">{stats.avgConfidence}%</div>
-            <p className="text-sm text-gray-600">AI Confidence</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-orange-600">{stats.overridesCount}</div>
-            <p className="text-sm text-gray-600">Human Overrides</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-green-600">{stats.completedToday}</div>
-            <p className="text-sm text-gray-600">Completed Today</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-gray-600">{stats.totalPending}</div>
-            <p className="text-sm text-gray-600">Pending Actions</p>
-          </CardContent>
-        </Card>
-      </div>
+      <StatsOverview stats={stats} />
 
-      {/* Task List */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -157,54 +90,12 @@ const ActionHub = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {sortedTasks.filter(task => task.status === 'pending').map((task) => (
-              <div key={task.id} className="p-4 border rounded-lg hover:bg-gray-50">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-start gap-3">
-                    {getTypeIcon(task.type)}
-                    <div className="flex-1">
-                      <h4 className="font-medium">{task.title}</h4>
-                      <p className="text-sm text-gray-600 mt-1">{task.description}</p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Badge variant="secondary" className={getPriorityColor(task.priority)}>
-                          {task.priority}
-                        </Badge>
-                        <Badge variant="outline">
-                          {task.applicationId}
-                        </Badge>
-                        {task.aiConfidence && (
-                          <Badge variant="outline" className="text-xs">
-                            AI: {task.aiConfidence}%
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-500">{task.estimatedTime}min</span>
-                    <Clock className="w-4 h-4 text-gray-400" />
-                  </div>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-2">
-                    <AISmartButton type="review" size="sm" />
-                    <Button 
-                      size="sm" 
-                      className="bg-orange-500 hover:bg-orange-600"
-                      onClick={() => handleTaskCompletion(task.id)}
-                    >
-                      Complete
-                    </Button>
-                    <Button size="sm" variant="outline">
-                      Reassign
-                    </Button>
-                  </div>
-                  <div className="text-xs text-gray-500">
-                    Due: {new Date(task.dueDate).toLocaleTimeString()}
-                  </div>
-                </div>
-              </div>
+            {pendingTasks.map((task) => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                onComplete={handleTaskCompletion}
+              />
             ))}
           </div>
         </CardContent>

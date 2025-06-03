@@ -2,8 +2,8 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import { Activity, FileText, Shield, MessageSquare, TrendingUp } from 'lucide-react';
+import ProgressBar from '@/components/shared/ProgressBar';
 
 const AIAgentStatus = () => {
   const agents = [
@@ -86,7 +86,7 @@ const AIAgentStatus = () => {
                 </div>
               </div>
               <div className="space-y-1">
-                <Progress value={agent.progress} className="h-1" />
+                <ProgressBar value={agent.progress} className="h-1" showPercentage={false} />
                 <p className="text-xs text-gray-500">{agent.description}</p>
               </div>
             </div>
@@ -98,7 +98,7 @@ const AIAgentStatus = () => {
             <span>System Load</span>
             <span>Normal</span>
           </div>
-          <Progress value={72} className="h-1 mt-1" />
+          <ProgressBar value={72} className="h-1 mt-1" showPercentage={false} />
         </div>
       </CardContent>
     </Card>
