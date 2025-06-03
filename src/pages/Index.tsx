@@ -21,7 +21,7 @@ const Index = () => {
               alt="ING Logo" 
               className="h-8"
             />
-            <h1 className="text-xl font-semibold text-gray-900">Mortgage Processing Portal</h1>
+            <h1 className="text-xl font-semibold text-gray-900">Applicant Income Analysis</h1>
             <Badge variant="secondary" className="bg-green-100 text-green-800">
               <Zap className="w-3 h-3 mr-1" />
               AI Agents Active
