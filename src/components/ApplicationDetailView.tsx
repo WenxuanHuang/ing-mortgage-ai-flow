@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -6,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { Input } from '@/components/ui/input';
-import { CheckCircle, AlertTriangle, Clock, FileText, User, Shield, Activity, Zap, Eye, Download, RefreshCw } from 'lucide-react';
+import { CheckCircle, AlertTriangle, Clock, FileText, User, Shield, Activity, Zap, Eye, Download, RefreshCw, Calculator, TrendingUp, DollarSign } from 'lucide-react';
 
 const ApplicationDetailView = ({ application }) => {
   const [overrideValues, setOverrideValues] = useState({});
@@ -334,13 +333,276 @@ const ApplicationDetailView = ({ application }) => {
     </Card>
   );
 
+  const ResultSummary = () => {
+    const mockResultData = {
+      maxLoanAmount: 420000,
+      requestedAmount: 450000,
+      loanToValue: 85,
+      propertyValue: 525000,
+      monthlyPayment: 1680,
+      interestRate: 3.2,
+      loanTerm: 30,
+      rationale: {
+        grossMonthlyIncome: 4200,
+        debtToIncomeRatio: 40,
+        creditScore: 780,
+        downPayment: 78750,
+        monthlyExpenses: 2100
+      },
+      incomeAnalysis: {
+        bankStatement: {
+          estimatedAnnualIncome: 49800,
+          confidence: 94,
+          monthsAnalyzed: 12,
+          averageMonthlyIncome: 4150
+        },
+        paymentSlip: {
+          estimatedAnnualIncome: 50400,
+          confidence: 98,
+          grossMonthlySalary: 4200,
+          netMonthlySalary: 3150
+        },
+        employerStatement: {
+          estimatedAnnualIncome: 50400,
+          confidence: 100,
+          officialAnnualSalary: 50400,
+          bonuses: 0
+        },
+        finalEstimate: {
+          annualIncome: 50200,
+          overallConfidence: 97,
+          deviation: 1.2
+        }
+      }
+    };
+
+    return (
+      <div className="space-y-6">
+        {/* Lending Decision Summary */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Calculator className="w-5 h-5" />
+              Lending Decision Summary
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-medium text-lg mb-2">Maximum Loan Amount</h4>
+                  <div className="text-3xl font-bold text-ing-orange">
+                    €{mockResultData.maxLoanAmount.toLocaleString()}
+                  </div>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Requested: €{mockResultData.requestedAmount.toLocaleString()}
+                  </p>
+                  {mockResultData.maxLoanAmount < mockResultData.requestedAmount && (
+                    <Badge variant="destructive" className="mt-2">
+                      Below Requested Amount
+                    </Badge>
+                  )}
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <span className="text-sm text-gray-600">Monthly Payment</span>
+                    <p className="font-semibold">€{mockResultData.monthlyPayment}</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-600">Interest Rate</span>
+                    <p className="font-semibold">{mockResultData.interestRate}%</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-600">Loan-to-Value</span>
+                    <p className="font-semibold">{mockResultData.loanToValue}%</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-600">Term</span>
+                    <p className="font-semibold">{mockResultData.loanTerm} years</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h4 className="font-medium">Calculation Rationale</h4>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Gross Monthly Income:</span>
+                    <span className="font-medium">€{mockResultData.rationale.grossMonthlyIncome}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Debt-to-Income Ratio:</span>
+                    <span className="font-medium">{mockResultData.rationale.debtToIncomeRatio}%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Credit Score:</span>
+                    <span className="font-medium">{mockResultData.rationale.creditScore}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Down Payment:</span>
+                    <span className="font-medium">€{mockResultData.rationale.downPayment.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Monthly Expenses:</span>
+                    <span className="font-medium">€{mockResultData.rationale.monthlyExpenses}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Income Analysis */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="w-5 h-5" />
+              Income Estimation Analysis
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Bank Statement */}
+              <Card className="border border-gray-200">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <FileText className="w-4 h-4" />
+                    Bank Statement
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div>
+                    <span className="text-sm text-gray-600">Estimated Annual Income</span>
+                    <p className="text-xl font-bold">€{mockResultData.incomeAnalysis.bankStatement.estimatedAnnualIncome.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-600">Average Monthly</span>
+                    <p className="font-medium">€{mockResultData.incomeAnalysis.bankStatement.averageMonthlyIncome}</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-600">Analysis Period</span>
+                    <p className="font-medium">{mockResultData.incomeAnalysis.bankStatement.monthsAnalyzed} months</p>
+                  </div>
+                  <div className="pt-2">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-sm text-gray-600">Confidence</span>
+                      <span className="text-sm font-medium">{mockResultData.incomeAnalysis.bankStatement.confidence}%</span>
+                    </div>
+                    <Progress value={mockResultData.incomeAnalysis.bankStatement.confidence} className="h-2" />
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Payment Slip */}
+              <Card className="border border-gray-200">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <DollarSign className="w-4 h-4" />
+                    Payment Slip
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div>
+                    <span className="text-sm text-gray-600">Estimated Annual Income</span>
+                    <p className="text-xl font-bold">€{mockResultData.incomeAnalysis.paymentSlip.estimatedAnnualIncome.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-600">Gross Monthly</span>
+                    <p className="font-medium">€{mockResultData.incomeAnalysis.paymentSlip.grossMonthlySalary}</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-600">Net Monthly</span>
+                    <p className="font-medium">€{mockResultData.incomeAnalysis.paymentSlip.netMonthlySalary}</p>
+                  </div>
+                  <div className="pt-2">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-sm text-gray-600">Confidence</span>
+                      <span className="text-sm font-medium">{mockResultData.incomeAnalysis.paymentSlip.confidence}%</span>
+                    </div>
+                    <Progress value={mockResultData.incomeAnalysis.paymentSlip.confidence} className="h-2" />
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Employer Statement */}
+              <Card className="border border-gray-200">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Shield className="w-4 h-4" />
+                    Employer Statement
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div>
+                    <span className="text-sm text-gray-600">Estimated Annual Income</span>
+                    <p className="text-xl font-bold">€{mockResultData.incomeAnalysis.employerStatement.estimatedAnnualIncome.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-600">Official Annual Salary</span>
+                    <p className="font-medium">€{mockResultData.incomeAnalysis.employerStatement.officialAnnualSalary.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-600">Annual Bonuses</span>
+                    <p className="font-medium">€{mockResultData.incomeAnalysis.employerStatement.bonuses}</p>
+                  </div>
+                  <div className="pt-2">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-sm text-gray-600">Confidence</span>
+                      <span className="text-sm font-medium">{mockResultData.incomeAnalysis.employerStatement.confidence}%</span>
+                    </div>
+                    <Progress value={mockResultData.incomeAnalysis.employerStatement.confidence} className="h-2" />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Final Analysis */}
+            <Card className="bg-green-50 border-green-200">
+              <CardHeader>
+                <CardTitle className="text-lg text-green-800">Final Income Assessment</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <span className="text-sm text-green-700">Final Estimated Annual Income</span>
+                    <p className="text-2xl font-bold text-green-800">€{mockResultData.incomeAnalysis.finalEstimate.annualIncome.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-green-700">Overall Confidence Score</span>
+                    <p className="text-2xl font-bold text-green-800">{mockResultData.incomeAnalysis.finalEstimate.overallConfidence}%</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-green-700">Document Deviation</span>
+                    <p className="text-2xl font-bold text-green-800">{mockResultData.incomeAnalysis.finalEstimate.deviation}%</p>
+                  </div>
+                </div>
+                
+                <div className="pt-4 border-t border-green-200">
+                  <h4 className="font-medium text-green-800 mb-2">Analysis Summary</h4>
+                  <p className="text-sm text-green-700">
+                    The three income verification documents show excellent consistency with only {mockResultData.incomeAnalysis.finalEstimate.deviation}% deviation. 
+                    The employer statement provides the most authoritative source ({mockResultData.incomeAnalysis.employerStatement.confidence}% confidence), 
+                    while bank statement analysis over {mockResultData.incomeAnalysis.bankStatement.monthsAnalyzed} months confirms sustained income patterns. 
+                    This high confidence score of {mockResultData.incomeAnalysis.finalEstimate.overallConfidence}% supports the lending decision.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
+
   return (
     <Tabs defaultValue="overview" className="w-full">
-      <TabsList className="grid w-full grid-cols-4">
+      <TabsList className="grid w-full grid-cols-5">
         <TabsTrigger value="overview">Overview</TabsTrigger>
         <TabsTrigger value="documents">Document Processing</TabsTrigger>
         <TabsTrigger value="tasks">Tasks & Workflow</TabsTrigger>
         <TabsTrigger value="audit">Audit Trail</TabsTrigger>
+        <TabsTrigger value="result">Result</TabsTrigger>
       </TabsList>
 
       <TabsContent value="overview" className="space-y-4">
@@ -400,6 +662,10 @@ const ApplicationDetailView = ({ application }) => {
             </div>
           </CardContent>
         </Card>
+      </TabsContent>
+
+      <TabsContent value="result" className="space-y-4">
+        <ResultSummary />
       </TabsContent>
     </Tabs>
   );
