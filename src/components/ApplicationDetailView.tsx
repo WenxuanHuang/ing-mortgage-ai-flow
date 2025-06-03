@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -378,82 +379,7 @@ const ApplicationDetailView = ({ application }) => {
 
     return (
       <div className="space-y-6">
-        {/* Lending Decision Summary */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Calculator className="w-5 h-5" />
-              Lending Decision Summary
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div>
-                  <h4 className="font-medium text-lg mb-2">Maximum Loan Amount</h4>
-                  <div className="text-3xl font-bold text-ing-orange">
-                    €{mockResultData.maxLoanAmount.toLocaleString()}
-                  </div>
-                  <p className="text-sm text-gray-600 mt-1">
-                    Requested: €{mockResultData.requestedAmount.toLocaleString()}
-                  </p>
-                  {mockResultData.maxLoanAmount < mockResultData.requestedAmount && (
-                    <Badge variant="destructive" className="mt-2">
-                      Below Requested Amount
-                    </Badge>
-                  )}
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <span className="text-sm text-gray-600">Monthly Payment</span>
-                    <p className="font-semibold">€{mockResultData.monthlyPayment}</p>
-                  </div>
-                  <div>
-                    <span className="text-sm text-gray-600">Interest Rate</span>
-                    <p className="font-semibold">{mockResultData.interestRate}%</p>
-                  </div>
-                  <div>
-                    <span className="text-sm text-gray-600">Loan-to-Value</span>
-                    <p className="font-semibold">{mockResultData.loanToValue}%</p>
-                  </div>
-                  <div>
-                    <span className="text-sm text-gray-600">Term</span>
-                    <p className="font-semibold">{mockResultData.loanTerm} years</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <h4 className="font-medium">Calculation Rationale</h4>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Gross Monthly Income:</span>
-                    <span className="font-medium">€{mockResultData.rationale.grossMonthlyIncome}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Debt-to-Income Ratio:</span>
-                    <span className="font-medium">{mockResultData.rationale.debtToIncomeRatio}%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Credit Score:</span>
-                    <span className="font-medium">{mockResultData.rationale.creditScore}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Down Payment:</span>
-                    <span className="font-medium">€{mockResultData.rationale.downPayment.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Monthly Expenses:</span>
-                    <span className="font-medium">€{mockResultData.rationale.monthlyExpenses}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Income Analysis */}
+        {/* Income Analysis - Now First */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -589,6 +515,81 @@ const ApplicationDetailView = ({ application }) => {
                 </div>
               </CardContent>
             </Card>
+          </CardContent>
+        </Card>
+
+        {/* Lending Decision Summary - Now Second */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Calculator className="w-5 h-5" />
+              Lending Decision Summary
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-medium text-lg mb-2">Maximum Loan Amount</h4>
+                  <div className="text-3xl font-bold text-ing-orange">
+                    €{mockResultData.maxLoanAmount.toLocaleString()}
+                  </div>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Requested: €{mockResultData.requestedAmount.toLocaleString()}
+                  </p>
+                  {mockResultData.maxLoanAmount < mockResultData.requestedAmount && (
+                    <Badge variant="destructive" className="mt-2">
+                      Below Requested Amount
+                    </Badge>
+                  )}
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <span className="text-sm text-gray-600">Monthly Payment</span>
+                    <p className="font-semibold">€{mockResultData.monthlyPayment}</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-600">Interest Rate</span>
+                    <p className="font-semibold">{mockResultData.interestRate}%</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-600">Loan-to-Value</span>
+                    <p className="font-semibold">{mockResultData.loanToValue}%</p>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-600">Term</span>
+                    <p className="font-semibold">{mockResultData.loanTerm} years</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h4 className="font-medium">Calculation Rationale</h4>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Gross Monthly Income:</span>
+                    <span className="font-medium">€{mockResultData.rationale.grossMonthlyIncome}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Debt-to-Income Ratio:</span>
+                    <span className="font-medium">{mockResultData.rationale.debtToIncomeRatio}%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Credit Score:</span>
+                    <span className="font-medium">{mockResultData.rationale.creditScore}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Down Payment:</span>
+                    <span className="font-medium">€{mockResultData.rationale.downPayment.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Monthly Expenses:</span>
+                    <span className="font-medium">€{mockResultData.rationale.monthlyExpenses}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
