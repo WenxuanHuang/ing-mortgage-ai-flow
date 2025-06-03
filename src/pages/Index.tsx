@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -6,12 +5,14 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Bell, FileText, Users, TrendingUp, AlertCircle, CheckCircle, Clock, Zap } from 'lucide-react';
+import { Bell, FileText, Users, TrendingUp, AlertCircle, CheckCircle, Clock, Zap, Brain, CheckSquare } from 'lucide-react';
 import DashboardOverview from '@/components/DashboardOverview';
 import DocumentProcessor from '@/components/DocumentProcessor';
 import CustomerCommunications from '@/components/CustomerCommunications';
 import AIAgentStatus from '@/components/AIAgentStatus';
 import ApplicationsList from '@/components/ApplicationsList';
+import AgentNexus from '@/components/AgentNexus';
+import ActionHub from '@/components/ActionHub';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -59,7 +60,7 @@ const Index = () => {
         <nav className="w-64 bg-white border-r border-gray-200 min-h-screen">
           <div className="p-4">
             <Tabs value={activeTab} onValueChange={setActiveTab} orientation="vertical" className="w-full">
-              <TabsList className="grid w-full grid-rows-4 h-auto bg-gray-50">
+              <TabsList className="grid w-full grid-rows-6 h-auto bg-gray-50">
                 <TabsTrigger value="dashboard" className="justify-start data-[state=active]:bg-orange-50 data-[state=active]:text-orange-700">
                   <TrendingUp className="w-4 h-4 mr-2" />
                   Dashboard
@@ -67,6 +68,14 @@ const Index = () => {
                 <TabsTrigger value="applications" className="justify-start data-[state=active]:bg-orange-50 data-[state=active]:text-orange-700">
                   <FileText className="w-4 h-4 mr-2" />
                   Applications
+                </TabsTrigger>
+                <TabsTrigger value="agent-nexus" className="justify-start data-[state=active]:bg-orange-50 data-[state=active]:text-orange-700">
+                  <Brain className="w-4 h-4 mr-2" />
+                  Agent Nexus
+                </TabsTrigger>
+                <TabsTrigger value="action-hub" className="justify-start data-[state=active]:bg-orange-50 data-[state=active]:text-orange-700">
+                  <CheckSquare className="w-4 h-4 mr-2" />
+                  Action Hub
                 </TabsTrigger>
                 <TabsTrigger value="documents" className="justify-start data-[state=active]:bg-orange-50 data-[state=active]:text-orange-700">
                   <FileText className="w-4 h-4 mr-2" />
@@ -95,6 +104,14 @@ const Index = () => {
             
             <TabsContent value="applications">
               <ApplicationsList />
+            </TabsContent>
+
+            <TabsContent value="agent-nexus">
+              <AgentNexus />
+            </TabsContent>
+
+            <TabsContent value="action-hub">
+              <ActionHub />
             </TabsContent>
             
             <TabsContent value="documents">
