@@ -9,7 +9,7 @@ const ResultSummary: React.FC = () => {
   
   const mockResultData = {
     maxLoanAmount: 420000,
-    requestedAmount: 450000,
+    requestedAmount: 300000, // Updated to 300,000 euros
     loanToValue: 85,
     propertyValue: 525000,
     monthlyPayment: 1680,
@@ -121,10 +121,10 @@ const ResultSummary: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Final Assessment - Now at the top */}
-      <Card className="bg-blue-50 border-blue-200">
+      {/* Final Assessment - Updated styling to white/black */}
+      <Card>
         <CardHeader>
-          <CardTitle className="text-lg text-blue-800 flex items-center gap-2">
+          <CardTitle className="text-lg flex items-center gap-2">
             <Calculator className="w-5 h-5" />
             Final Assessment
           </CardTitle>
@@ -132,34 +132,34 @@ const ResultSummary: React.FC = () => {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <span className="text-sm text-blue-700">Final Annual Income</span>
-              <p className="text-2xl font-bold text-blue-800">€{mockResultData.incomeAnalysis.finalEstimate.annualIncome.toLocaleString()}</p>
+              <span className="text-sm text-gray-600">Final Annual Income</span>
+              <p className="text-2xl font-bold text-gray-900">€{mockResultData.incomeAnalysis.finalEstimate.annualIncome.toLocaleString()}</p>
             </div>
             <div>
-              <span className="text-sm text-blue-700">Overall Confidence Score</span>
-              <p className="text-2xl font-bold text-blue-800">{(100 - mockResultData.incomeAnalysis.finalEstimate.deviation).toFixed(1)}%</p>
+              <span className="text-sm text-gray-600">Overall Confidence Score</span>
+              <p className="text-2xl font-bold text-gray-900">{(100 - mockResultData.incomeAnalysis.finalEstimate.deviation).toFixed(1)}%</p>
             </div>
             <div>
-              <span className="text-sm text-blue-700">Requested Loan Amount</span>
-              <p className="text-2xl font-bold text-blue-800">€{mockResultData.requestedAmount.toLocaleString()}</p>
+              <span className="text-sm text-gray-600">Requested Loan Amount</span>
+              <p className="text-2xl font-bold text-gray-900">€{mockResultData.requestedAmount.toLocaleString()}</p>
             </div>
             <div>
-              <span className="text-sm text-blue-700">Loan-to-Income Ratio</span>
-              <p className="text-2xl font-bold text-blue-800">{requestedLoanToIncomeRatio.toFixed(1)}x</p>
+              <span className="text-sm text-gray-600">Loan-to-Income Ratio</span>
+              <p className="text-2xl font-bold text-gray-900">{requestedLoanToIncomeRatio.toFixed(1)}x</p>
             </div>
           </div>
 
           {needsAdjustment && (
-            <div className="pt-4 border-t border-blue-200">
-              <div className="bg-white p-4 rounded border border-blue-200">
+            <div className="pt-4 border-t border-gray-200">
+              <div className="bg-gray-50 p-4 rounded border border-gray-200">
                 <div className="flex items-center gap-2 mb-2">
-                  <Bot className="w-4 h-4 text-blue-600" />
-                  <span className="font-medium text-blue-800">AI Guidance</span>
+                  <Bot className="w-4 h-4 text-gray-600" />
+                  <span className="font-medium text-gray-900">AI Guidance</span>
                 </div>
-                <p className="text-sm text-blue-700 mb-2">
+                <p className="text-sm text-gray-700 mb-2">
                   <strong>Suggested Maximum Loan Amount:</strong> €{suggestedLoanAmount.toLocaleString()}
                 </p>
-                <p className="text-sm text-blue-600">
+                <p className="text-sm text-gray-600">
                   To achieve the optimal 5x loan-to-income ratio based on the final income assessment of 
                   €{mockResultData.incomeAnalysis.finalEstimate.annualIncome.toLocaleString()}, 
                   the recommended maximum loan amount is €{suggestedLoanAmount.toLocaleString()}. 
@@ -173,7 +173,7 @@ const ResultSummary: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Income Analysis Documents */}
+      {/* Income Analysis Documents - Updated layout to horizontal */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -182,154 +182,135 @@ const ResultSummary: React.FC = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-4">
-            <Collapsible 
-              open={expandedDocument === 'Bank Statement'} 
-              onOpenChange={() => handleDocumentClick('Bank Statement')}
-            >
-              <Card className="border border-gray-200 cursor-pointer hover:shadow-md transition-shadow">
-                <CollapsibleTrigger className="w-full">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <FileText className="w-4 h-4" />
-                        Bank Statement
-                      </div>
-                      {expandedDocument === 'Bank Statement' ? 
-                        <ChevronUp className="w-4 h-4" /> : 
-                        <ChevronDown className="w-4 h-4" />
-                      }
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div>
-                      <span className="text-sm text-gray-600">Annual Income</span>
-                      <p className="text-xl font-bold">€{mockResultData.incomeAnalysis.bankStatement.annualIncome.toLocaleString()}</p>
+          {/* Horizontal layout for document cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card className="border border-gray-200 cursor-pointer hover:shadow-md transition-shadow" 
+                  onClick={() => handleDocumentClick('Bank Statement')}>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <FileText className="w-4 h-4" />
+                    Bank Statement
+                  </div>
+                  {expandedDocument === 'Bank Statement' ? 
+                    <ChevronUp className="w-4 h-4" /> : 
+                    <ChevronDown className="w-4 h-4" />
+                  }
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div>
+                  <span className="text-sm text-gray-600">Annual Income</span>
+                  <p className="text-xl font-bold">€{mockResultData.incomeAnalysis.bankStatement.annualIncome.toLocaleString()}</p>
+                </div>
+                
+                <div className="pt-3 border-t border-gray-200">
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">Income Components</h4>
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Salary:</span>
+                      <span className="font-medium">€{mockResultData.incomeAnalysis.bankStatement.incomeComponents.salary.toLocaleString()}</span>
                     </div>
-                    
-                    <div className="pt-3 border-t border-gray-200">
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Income Components</h4>
-                      <div className="space-y-1">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Salary:</span>
-                          <span className="font-medium">€{mockResultData.incomeAnalysis.bankStatement.incomeComponents.salary.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Bonuses:</span>
-                          <span className="font-medium">€{mockResultData.incomeAnalysis.bankStatement.incomeComponents.bonuses.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Other Income:</span>
-                          <span className="font-medium">€{mockResultData.incomeAnalysis.bankStatement.incomeComponents.otherIncome.toLocaleString()}</span>
-                        </div>
-                      </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Bonuses:</span>
+                      <span className="font-medium">€{mockResultData.incomeAnalysis.bankStatement.incomeComponents.bonuses.toLocaleString()}</span>
                     </div>
-                  </CardContent>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  {renderDocumentPreview('Bank Statement')}
-                </CollapsibleContent>
-              </Card>
-            </Collapsible>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Other Income:</span>
+                      <span className="font-medium">€{mockResultData.incomeAnalysis.bankStatement.incomeComponents.otherIncome.toLocaleString()}</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-            <Collapsible 
-              open={expandedDocument === 'Payment Slip'} 
-              onOpenChange={() => handleDocumentClick('Payment Slip')}
-            >
-              <Card className="border border-gray-200 cursor-pointer hover:shadow-md transition-shadow">
-                <CollapsibleTrigger className="w-full">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <DollarSign className="w-4 h-4" />
-                        Payment Slip
-                      </div>
-                      {expandedDocument === 'Payment Slip' ? 
-                        <ChevronUp className="w-4 h-4" /> : 
-                        <ChevronDown className="w-4 h-4" />
-                      }
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div>
-                      <span className="text-sm text-gray-600">Annual Income</span>
-                      <p className="text-xl font-bold">€{mockResultData.incomeAnalysis.paymentSlip.annualIncome.toLocaleString()}</p>
+            <Card className="border border-gray-200 cursor-pointer hover:shadow-md transition-shadow" 
+                  onClick={() => handleDocumentClick('Payment Slip')}>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="w-4 h-4" />
+                    Payment Slip
+                  </div>
+                  {expandedDocument === 'Payment Slip' ? 
+                    <ChevronUp className="w-4 h-4" /> : 
+                    <ChevronDown className="w-4 h-4" />
+                  }
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div>
+                  <span className="text-sm text-gray-600">Annual Income</span>
+                  <p className="text-xl font-bold">€{mockResultData.incomeAnalysis.paymentSlip.annualIncome.toLocaleString()}</p>
+                </div>
+                
+                <div className="pt-3 border-t border-gray-200">
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">Income Components</h4>
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Base Salary:</span>
+                      <span className="font-medium">€{mockResultData.incomeAnalysis.paymentSlip.incomeComponents.baseSalary.toLocaleString()}</span>
                     </div>
-                    
-                    <div className="pt-3 border-t border-gray-200">
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Income Components</h4>
-                      <div className="space-y-1">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Base Salary:</span>
-                          <span className="font-medium">€{mockResultData.incomeAnalysis.paymentSlip.incomeComponents.baseSalary.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Holiday Allowance:</span>
-                          <span className="font-medium">€{mockResultData.incomeAnalysis.paymentSlip.incomeComponents.holidayAllowance.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Other:</span>
-                          <span className="font-medium">€{mockResultData.incomeAnalysis.paymentSlip.incomeComponents.other}</span>
-                        </div>
-                      </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Holiday Allowance:</span>
+                      <span className="font-medium">€{mockResultData.incomeAnalysis.paymentSlip.incomeComponents.holidayAllowance.toLocaleString()}</span>
                     </div>
-                  </CardContent>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  {renderDocumentPreview('Payment Slip')}
-                </CollapsibleContent>
-              </Card>
-            </Collapsible>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Other:</span>
+                      <span className="font-medium">€{mockResultData.incomeAnalysis.paymentSlip.incomeComponents.other}</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-            <Collapsible 
-              open={expandedDocument === 'Employer Statement'} 
-              onOpenChange={() => handleDocumentClick('Employer Statement')}
-            >
-              <Card className="border border-gray-200 cursor-pointer hover:shadow-md transition-shadow">
-                <CollapsibleTrigger className="w-full">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Shield className="w-4 h-4" />
-                        Employer Statement
-                      </div>
-                      {expandedDocument === 'Employer Statement' ? 
-                        <ChevronUp className="w-4 h-4" /> : 
-                        <ChevronDown className="w-4 h-4" />
-                      }
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div>
-                      <span className="text-sm text-gray-600">Annual Income</span>
-                      <p className="text-xl font-bold">€{mockResultData.incomeAnalysis.employerStatement.annualIncome.toLocaleString()}</p>
+            <Card className="border border-gray-200 cursor-pointer hover:shadow-md transition-shadow" 
+                  onClick={() => handleDocumentClick('Employer Statement')}>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Shield className="w-4 h-4" />
+                    Employer Statement
+                  </div>
+                  {expandedDocument === 'Employer Statement' ? 
+                    <ChevronUp className="w-4 h-4" /> : 
+                    <ChevronDown className="w-4 h-4" />
+                  }
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div>
+                  <span className="text-sm text-gray-600">Annual Income</span>
+                  <p className="text-xl font-bold">€{mockResultData.incomeAnalysis.employerStatement.annualIncome.toLocaleString()}</p>
+                </div>
+                
+                <div className="pt-3 border-t border-gray-200">
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">Income Components</h4>
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Annual Salary:</span>
+                      <span className="font-medium">€{mockResultData.incomeAnalysis.employerStatement.incomeComponents.annualSalary.toLocaleString()}</span>
                     </div>
-                    
-                    <div className="pt-3 border-t border-gray-200">
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Income Components</h4>
-                      <div className="space-y-1">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Annual Salary:</span>
-                          <span className="font-medium">€{mockResultData.incomeAnalysis.employerStatement.incomeComponents.annualSalary.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Variable Comp:</span>
-                          <span className="font-medium">€{mockResultData.incomeAnalysis.employerStatement.incomeComponents.variableCompensation}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Benefits:</span>
-                          <span className="font-medium">€{mockResultData.incomeAnalysis.employerStatement.incomeComponents.benefits}</span>
-                        </div>
-                      </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Variable Comp:</span>
+                      <span className="font-medium">€{mockResultData.incomeAnalysis.employerStatement.incomeComponents.variableCompensation}</span>
                     </div>
-                  </CardContent>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  {renderDocumentPreview('Employer Statement')}
-                </CollapsibleContent>
-              </Card>
-            </Collapsible>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Benefits:</span>
+                      <span className="font-medium">€{mockResultData.incomeAnalysis.employerStatement.incomeComponents.benefits}</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
+
+          {/* Expanded content below the row */}
+          {expandedDocument && (
+            <div className="w-full">
+              {renderDocumentPreview(expandedDocument)}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
