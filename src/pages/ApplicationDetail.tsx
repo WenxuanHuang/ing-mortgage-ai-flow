@@ -37,11 +37,7 @@ const ApplicationDetail = () => {
       {/* Header */}
       <header className="bg-white border-b border-gray-200 px-6 py-4 relative z-10">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" onClick={() => navigate('/')}>
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Applications
-            </Button>
+          <div className="flex items-center space-x-4 ml-64">
             <img 
               src="/lovable-uploads/00adf838-6a5b-44a4-8209-15d1a7bd01fe.png" 
               alt="ING Logo" 
@@ -58,7 +54,12 @@ const ApplicationDetail = () => {
         <div className="flex min-h-[calc(100vh-80px)] w-full">
           <Sidebar className="w-64 border-r border-gray-200 flex-shrink-0">
             <SidebarHeader className="p-3 border-b border-gray-200">
-              <h2 className="font-semibold text-gray-900 text-sm">All Applications</h2>
+              <div className="flex items-center gap-3">
+                <Button variant="ghost" size="sm" onClick={() => navigate('/')}>
+                  <ArrowLeft className="w-4 h-4" />
+                </Button>
+                <h2 className="font-semibold text-gray-900 text-sm">All Applications</h2>
+              </div>
             </SidebarHeader>
             <SidebarContent>
               <SidebarMenu className="p-2">
