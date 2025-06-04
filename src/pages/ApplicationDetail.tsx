@@ -79,7 +79,10 @@ const ApplicationDetail = () => {
             {/* Header */}
             <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <SidebarTrigger />
+                <SidebarTrigger className="h-8 w-8" />
+                <Button variant="ghost" size="sm" onClick={() => navigate('/')} className="h-8 w-8 p-0">
+                  <ArrowLeft className="w-5 h-5" />
+                </Button>
                 <img 
                   src="/lovable-uploads/00adf838-6a5b-44a4-8209-15d1a7bd01fe.png" 
                   alt="ING Logo" 

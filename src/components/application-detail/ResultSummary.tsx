@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { TrendingUp, Calculator, FileText, DollarSign, Shield, Bot, ChevronDown, ChevronUp, ZoomIn, ZoomOut, Download } from 'lucide-react';
+import { TrendingUp, Calculator, FileText, DollarSign, Shield, Bot, ChevronDown, ChevronUp, ZoomIn, ZoomOut, Download, CheckCircle, AlertCircle, Clock, Building, User, CreditCard } from 'lucide-react';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -139,29 +139,46 @@ const ResultSummary: React.FC = () => {
     setExpandedDocument(expandedDocument === documentType ? null : documentType);
   };
 
+  const getDocumentIcon = (documentType: string) => {
+    switch (documentType) {
+      case 'Bank Statement':
+        return Building;
+      case 'Payment Slip':
+        return CreditCard;
+      case 'Employer Statement':
+        return User;
+      default:
+        return FileText;
+    }
+  };
+
   const renderDocumentPreview = (documentType: string) => {
     const specificData = getDocumentSpecificData(documentType);
+    const DocumentIcon = getDocumentIcon(documentType);
     
     return (
-      <div className="mt-4 border border-gray-200 rounded-lg bg-gray-50 w-full">
-        <div className="p-4">
+      <div className="mt-4 border border-gray-200 rounded-lg bg-gradient-to-br from-gray-50 to-white w-full">
+        <div className="p-6">
           {/* Two column layout: PDF preview on left, extracted info on right */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Left side - Document Preview */}
             <div>
-              <h4 className="font-medium text-gray-900 mb-3">Document Preview</h4>
-              <div className="bg-white border rounded-lg p-6 relative">
+              <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <FileText className="w-5 h-5 text-blue-600" />
+                Document Preview
+              </h4>
+              <div className="bg-white border border-gray-200 rounded-xl p-6 relative shadow-sm">
                 
                 {/* PDF Controls - always visible and centered */}
-                <div className="flex justify-center mb-4">
-                  <div className="bg-gray-800 rounded-lg p-2 flex items-center gap-2 shadow-lg">
+                <div className="flex justify-center mb-6">
+                  <div className="bg-gray-900 rounded-xl p-3 flex items-center gap-3 shadow-lg border">
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="text-white hover:bg-gray-700 h-8 w-8 p-0"
+                            className="text-white hover:bg-gray-800 h-9 w-9 p-0 rounded-lg"
                             onClick={handleZoomOut}
                           >
                             <ZoomOut className="w-4 h-4" />
@@ -179,7 +196,7 @@ const ResultSummary: React.FC = () => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="text-white hover:bg-gray-700 h-8 w-8 p-0"
+                            className="text-white hover:bg-gray-800 h-9 w-9 p-0 rounded-lg"
                             onClick={handleZoomIn}
                           >
                             <ZoomIn className="w-4 h-4" />
@@ -199,7 +216,7 @@ const ResultSummary: React.FC = () => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="text-white hover:bg-gray-700 h-8 w-8 p-0"
+                            className="text-white hover:bg-gray-800 h-9 w-9 p-0 rounded-lg"
                             onClick={handleAIExtraction}
                           >
                             <Bot className="w-4 h-4" />
@@ -217,7 +234,7 @@ const ResultSummary: React.FC = () => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="text-white hover:bg-gray-700 h-8 w-8 p-0"
+                            className="text-white hover:bg-gray-800 h-9 w-9 p-0 rounded-lg"
                             onClick={handleDownload}
                           >
                             <Download className="w-4 h-4" />
@@ -236,13 +253,13 @@ const ResultSummary: React.FC = () => {
                     <img
                       src="/lovable-uploads/df41c8c1-77eb-476b-9f21-73ccbcf0ad2a.png"
                       alt="Payment Slip Document"
-                      className="w-full h-full object-contain border rounded transition-transform duration-200"
+                      className="w-full h-full object-contain border rounded-lg transition-transform duration-200"
                       style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'center' }}
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gray-50">
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border">
                       <div className="text-center text-gray-500">
-                        <FileText className="w-16 h-16 mx-auto mb-3" />
+                        <DocumentIcon className="w-16 h-16 mx-auto mb-3 text-gray-400" />
                         <p className="text-lg font-medium">PDF Preview</p>
                         <p className="text-sm">{documentType}</p>
                       </div>
@@ -254,53 +271,82 @@ const ResultSummary: React.FC = () => {
 
             {/* Right side - AI Extracted Information in single column */}
             <div>
-              <h4 className="font-medium text-gray-900 mb-3">AI Extracted Information</h4>
+              <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <Bot className="w-5 h-5 text-purple-600" />
+                AI Extracted Information
+              </h4>
               <div className="space-y-4">
-                {/* Document Details */}
-                <div className="bg-white border rounded-lg p-4">
-                  <h5 className="font-medium text-sm text-gray-700 mb-2">Document Details</h5>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Document Type:</span>
-                      <span className="font-medium">{documentType}</span>
+                {/* Document Status Overview */}
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <CheckCircle className="w-5 h-5 text-green-600" />
+                    <h5 className="font-semibold text-green-800">Document Verified</h5>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-green-600" />
+                      <span className="text-green-700">Processing: 2.3s</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Date Range:</span>
-                      <span className="font-medium">Jan 2024 - Mar 2024</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Validation Status:</span>
-                      <span className="text-green-600 font-medium">Verified</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Confidence Score:</span>
-                      <span className="font-medium">98.5%</span>
+                    <div className="flex items-center gap-2">
+                      <Bot className="w-4 h-4 text-green-600" />
+                      <span className="text-green-700">Confidence: 98.5%</span>
                     </div>
                   </div>
                 </div>
                 
-                {/* Extracted Data Fields */}
-                <div className="bg-white border rounded-lg p-4">
-                  <h5 className="font-medium text-sm text-gray-700 mb-2">Extracted Data Fields</h5>
-                  <div className="space-y-2 text-sm">
+                {/* Document Details */}
+                <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                  <div className="flex items-center gap-2 mb-3">
+                    <DocumentIcon className="w-5 h-5 text-blue-600" />
+                    <h5 className="font-semibold text-gray-800">Document Details</h5>
+                  </div>
+                  <div className="space-y-3 text-sm">
+                    <div className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
+                      <span className="text-gray-600 font-medium">Document Type:</span>
+                      <span className="font-semibold text-gray-900 bg-blue-100 text-blue-800 px-2 py-1 rounded-md text-xs">{documentType}</span>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
+                      <span className="text-gray-600 font-medium">Date Range:</span>
+                      <span className="font-semibold text-gray-900">Jan 2024 - Mar 2024</span>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-green-50 rounded-lg">
+                      <span className="text-gray-600 font-medium">Validation Status:</span>
+                      <span className="text-green-700 font-semibold flex items-center gap-1">
+                        <CheckCircle className="w-4 h-4" />
+                        Verified
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Key Information Extracted */}
+                <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                  <div className="flex items-center gap-2 mb-3">
+                    <AlertCircle className="w-5 h-5 text-orange-600" />
+                    <h5 className="font-semibold text-gray-800">Key Information</h5>
+                  </div>
+                  <div className="space-y-3 text-sm">
                     {Object.entries(specificData).slice(0, 6).map(([key, value]) => (
-                      <div key={key} className="flex justify-between">
-                        <span className="text-gray-600 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
-                        <span className="font-medium">{value}</span>
+                      <div key={key} className="flex justify-between items-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                        <span className="text-gray-600 font-medium capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
+                        <span className="font-semibold text-gray-900 bg-gray-100 px-2 py-1 rounded text-xs">{value}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Additional Information */}
+                {/* Additional Details */}
                 {Object.entries(specificData).length > 6 && (
-                  <div className="bg-white border rounded-lg p-4">
-                    <h5 className="font-medium text-sm text-gray-700 mb-2">Additional Information</h5>
+                  <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                    <div className="flex items-center gap-2 mb-3">
+                      <FileText className="w-5 h-5 text-gray-600" />
+                      <h5 className="font-semibold text-gray-800">Additional Details</h5>
+                    </div>
                     <div className="space-y-2 text-sm">
                       {Object.entries(specificData).slice(6).map(([key, value]) => (
-                        <div key={key} className="flex justify-between">
+                        <div key={key} className="flex justify-between items-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
                           <span className="text-gray-600 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
-                          <span className="font-medium">{value}</span>
+                          <span className="font-medium text-gray-900">{value}</span>
                         </div>
                       ))}
                     </div>
