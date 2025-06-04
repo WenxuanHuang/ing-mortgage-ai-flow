@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrendingUp, Calculator, FileText, DollarSign, Shield, Bot, ChevronDown, ChevronUp } from 'lucide-react';
@@ -124,7 +125,7 @@ const ResultSummary: React.FC = () => {
     const specificData = getDocumentSpecificData(documentType);
     
     return (
-      <div className="mt-4 border border-gray-200 rounded-lg bg-gray-50 mx-4">
+      <div className="mt-4 border border-gray-200 rounded-lg bg-gray-50 w-full">
         <div className="p-4">
           {/* AI Extracted Information first - full width row */}
           <div className="mb-6">
@@ -187,10 +188,10 @@ const ResultSummary: React.FC = () => {
             <div className="bg-white border rounded-lg p-6">
               <AspectRatio ratio={210/297}>
                 {documentType === 'Payment Slip' ? (
-                  <iframe
-                    src="https://www.staff.universiteitleiden.nl/binaries/content/assets/ul2staff/po/salaris/explanatory-notes-on-payslip-12-2016.pdf"
-                    className="w-full h-full border-0"
-                    title="Payment Slip PDF"
+                  <img
+                    src="/lovable-uploads/df41c8c1-77eb-476b-9f21-73ccbcf0ad2a.png"
+                    alt="Payment Slip Document"
+                    className="w-full h-full object-contain border rounded"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-gray-50">
@@ -214,7 +215,7 @@ const ResultSummary: React.FC = () => {
       {/* Final Assessment */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
+          <CardTitle className="text-xl flex items-center gap-2">
             <Calculator className="w-5 h-5" />
             Final Assessment
           </CardTitle>
@@ -268,7 +269,7 @@ const ResultSummary: React.FC = () => {
       {/* Income Analysis Documents */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className="text-xl flex items-center gap-2">
             <TrendingUp className="w-5 h-5" />
             Income Analysis Documents
           </CardTitle>
