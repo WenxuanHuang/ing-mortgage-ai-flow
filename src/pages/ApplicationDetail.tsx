@@ -38,14 +38,14 @@ const ApplicationDetail = () => {
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" onClick={() => navigate('/')}>
+            <Button variant="ghost" onClick={() => navigate('/'}>
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Applications
             </Button>
             <img 
               src="/lovable-uploads/00adf838-6a5b-44a4-8209-15d1a7bd01fe.png" 
               alt="ING Logo" 
-              className="h-8"
+              className="h-10 w-auto"
             />
             <h1 className="text-xl font-semibold text-gray-900">
               Application Details - {currentApplication.id}
@@ -67,9 +67,9 @@ const ApplicationDetail = () => {
                     <SidebarMenuButton
                       onClick={() => handleApplicationSelect(app.id)}
                       isActive={app.id === applicationId}
-                      className="w-full p-3 text-left hover:bg-gray-100 rounded-lg"
+                      className="w-full p-4 text-left hover:bg-gray-100 rounded-lg min-h-[80px]"
                     >
-                      <div className="flex flex-col gap-1">
+                      <div className="flex flex-col gap-2 w-full">
                         <div className="flex items-center justify-between">
                           <span className="font-medium text-sm">{app.id}</span>
                           <span className={`px-2 py-1 text-xs rounded-full ${
@@ -90,7 +90,7 @@ const ApplicationDetail = () => {
             </SidebarContent>
           </Sidebar>
 
-          <main className="flex-1 p-6">
+          <main className="flex-1 p-6 overflow-auto">
             <ApplicationDetailView application={currentApplication} />
           </main>
         </div>
