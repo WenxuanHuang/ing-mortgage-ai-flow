@@ -24,7 +24,7 @@ const ApplicationsList = () => {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Mortgage Applications</h2>
         <Button className="bg-orange-500 hover:bg-orange-600">
-          New Application
+          Scan for New Applications
         </Button>
       </div>
 

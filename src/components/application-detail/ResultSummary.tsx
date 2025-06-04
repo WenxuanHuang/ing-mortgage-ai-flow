@@ -71,7 +71,13 @@ const ResultSummary: React.FC = () => {
           numberOfTransactions: '247',
           salaryDeposits: '12',
           regularIncome: '€4,150/month',
-          irregularIncome: '€300/month'
+          irregularIncome: '€300/month',
+          bankName: 'ING Bank N.V.',
+          accountType: 'Current Account',
+          overdraftLimit: '€500',
+          averageBalance: '€8,750',
+          minimumBalance: '€2,150',
+          maximumBalance: '€15,420'
         };
       case 'Payment Slip':
         return {
@@ -82,7 +88,13 @@ const ResultSummary: React.FC = () => {
           netSalary: '€3,200',
           taxDeducted: '€600',
           socialContributions: '€200',
-          pensionContribution: '€320'
+          pensionContribution: '€320',
+          departmentCode: 'IT-DEV-001',
+          costCenter: '4200',
+          workingDays: '21',
+          overtimeHours: '8',
+          vacationDays: '2.5',
+          sickLeaveDays: '0'
         };
       case 'Employer Statement':
         return {
@@ -93,7 +105,11 @@ const ResultSummary: React.FC = () => {
           workingHours: '40 hours/week',
           probationPeriod: 'Completed',
           nextSalaryReview: 'June 2024',
-          benefits: 'Health insurance, Pension'
+          benefits: 'Health insurance, Pension',
+          managerId: 'MGR-001',
+          hrContact: 'hr@techsolutions.nl',
+          officeLocation: 'Amsterdam HQ',
+          noticePeriod: '1 month'
         };
       default:
         return {};
@@ -108,7 +124,7 @@ const ResultSummary: React.FC = () => {
     const specificData = getDocumentSpecificData(documentType);
     
     return (
-      <div className="mt-4 border border-gray-200 rounded-lg bg-gray-50">
+      <div className="mt-4 border border-gray-200 rounded-lg bg-gray-50 mx-4">
         <div className="p-4">
           {/* AI Extracted Information first - full width row */}
           <div className="mb-6">
@@ -170,13 +186,21 @@ const ResultSummary: React.FC = () => {
             <h4 className="font-medium text-gray-900 mb-3">Document Preview</h4>
             <div className="bg-white border rounded-lg p-6">
               <AspectRatio ratio={210/297}>
-                <div className="w-full h-full flex items-center justify-center bg-gray-50">
-                  <div className="text-center text-gray-500">
-                    <FileText className="w-16 h-16 mx-auto mb-3" />
-                    <p className="text-lg font-medium">PDF Preview</p>
-                    <p className="text-sm">{documentType}</p>
+                {documentType === 'Payment Slip' ? (
+                  <iframe
+                    src="https://www.staff.universiteitleiden.nl/binaries/content/assets/ul2staff/po/salaris/explanatory-notes-on-payslip-12-2016.pdf"
+                    className="w-full h-full border-0"
+                    title="Payment Slip PDF"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-50">
+                    <div className="text-center text-gray-500">
+                      <FileText className="w-16 h-16 mx-auto mb-3" />
+                      <p className="text-lg font-medium">PDF Preview</p>
+                      <p className="text-sm">{documentType}</p>
+                    </div>
                   </div>
-                </div>
+                )}
               </AspectRatio>
             </div>
           </div>
@@ -219,9 +243,9 @@ const ResultSummary: React.FC = () => {
 
           {needsAdjustment && (
             <div className="pt-4 border-t border-gray-200">
-              <div className="bg-ing-light-orange p-4 rounded">
+              <div className="bg-orange-50 p-4 rounded">
                 <div className="flex items-center gap-2 mb-2">
-                  <Bot className="w-4 h-4 text-ing-orange" />
+                  <Bot className="w-4 h-4 text-orange-600" />
                   <span className="font-medium text-gray-900">AI Guidance</span>
                 </div>
                 <p className="text-sm text-gray-700 mb-2">
@@ -254,7 +278,7 @@ const ResultSummary: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card className={`cursor-pointer hover:shadow-md transition-all ${
               expandedDocument === 'Bank Statement' 
-                ? 'border-ing-orange border-2 shadow-md' 
+                ? 'border-orange-500 border-2 shadow-md' 
                 : 'border border-gray-200'
             }`} 
                   onClick={() => handleDocumentClick('Bank Statement')}>
@@ -298,7 +322,7 @@ const ResultSummary: React.FC = () => {
 
             <Card className={`cursor-pointer hover:shadow-md transition-all ${
               expandedDocument === 'Payment Slip' 
-                ? 'border-ing-orange border-2 shadow-md' 
+                ? 'border-orange-500 border-2 shadow-md' 
                 : 'border border-gray-200'
             }`} 
                   onClick={() => handleDocumentClick('Payment Slip')}>
@@ -342,7 +366,7 @@ const ResultSummary: React.FC = () => {
 
             <Card className={`cursor-pointer hover:shadow-md transition-all ${
               expandedDocument === 'Employer Statement' 
-                ? 'border-ing-orange border-2 shadow-md' 
+                ? 'border-orange-500 border-2 shadow-md' 
                 : 'border border-gray-200'
             }`} 
                   onClick={() => handleDocumentClick('Employer Statement')}>
