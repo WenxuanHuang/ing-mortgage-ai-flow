@@ -1,11 +1,14 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { TrendingUp, Calculator, FileText, DollarSign, Shield, Bot, ChevronDown, ChevronUp } from 'lucide-react';
+import { TrendingUp, Calculator, FileText, DollarSign, Shield, Bot, ChevronDown, ChevronUp, ZoomIn, ZoomOut, Download } from 'lucide-react';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const ResultSummary: React.FC = () => {
   const [expandedDocument, setExpandedDocument] = useState<string | null>(null);
+  const [zoomLevel, setZoomLevel] = useState(100);
+  const [showControls, setShowControls] = useState(false);
   
   const mockResultData = {
     maxLoanAmount: 420000,
@@ -60,6 +63,24 @@ const ResultSummary: React.FC = () => {
   const suggestedLoanAmount = mockResultData.incomeAnalysis.finalEstimate.annualIncome * targetRatio;
   const needsAdjustment = Math.abs(requestedLoanToIncomeRatio - targetRatio) > 0.2;
   const isRatioHigh = requestedLoanToIncomeRatio > 5;
+
+  const handleZoomIn = () => {
+    setZoomLevel(prev => Math.min(prev + 25, 200));
+  };
+
+  const handleZoomOut = () => {
+    setZoomLevel(prev => Math.max(prev - 25, 50));
+  };
+
+  const handleAIExtraction = () => {
+    console.log('AI extraction triggered for document');
+    // Here you would implement the AI extraction functionality
+  };
+
+  const handleDownload = () => {
+    console.log('Download triggered for document');
+    // Here you would implement the download functionality
+  };
 
   const getDocumentSpecificData = (documentType: string) => {
     switch (documentType) {
@@ -185,13 +206,96 @@ const ResultSummary: React.FC = () => {
           {/* Document Preview - full width below with A4 aspect ratio */}
           <div>
             <h4 className="font-medium text-gray-900 mb-3">Document Preview</h4>
-            <div className="bg-white border rounded-lg p-6">
+            <div className="bg-white border rounded-lg p-6 relative"
+                 onMouseEnter={() => setShowControls(true)}
+                 onMouseLeave={() => setShowControls(false)}>
+              
+              {/* PDF Controls Overlay */}
+              {showControls && (
+                <div className="absolute top-4 right-4 z-10 bg-gray-800 rounded-lg p-2 flex items-center gap-2 shadow-lg">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-white hover:bg-gray-700 h-8 w-8 p-0"
+                          onClick={handleZoomOut}
+                        >
+                          <ZoomOut className="w-4 h-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Zoom Out</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-white hover:bg-gray-700 h-8 w-8 p-0"
+                          onClick={handleZoomIn}
+                        >
+                          <ZoomIn className="w-4 h-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Zoom In</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+
+                  <div className="w-px h-6 bg-gray-600"></div>
+
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-white hover:bg-gray-700 h-8 w-8 p-0"
+                          onClick={handleAIExtraction}
+                        >
+                          <Bot className="w-4 h-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>AI Extraction</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-white hover:bg-gray-700 h-8 w-8 p-0"
+                          onClick={handleDownload}
+                        >
+                          <Download className="w-4 h-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Download</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              )}
+
               <AspectRatio ratio={210/297}>
                 {documentType === 'Payment Slip' ? (
                   <img
                     src="/lovable-uploads/df41c8c1-77eb-476b-9f21-73ccbcf0ad2a.png"
                     alt="Payment Slip Document"
-                    className="w-full h-full object-contain border rounded"
+                    className="w-full h-full object-contain border rounded transition-transform duration-200"
+                    style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'center' }}
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-gray-50">
