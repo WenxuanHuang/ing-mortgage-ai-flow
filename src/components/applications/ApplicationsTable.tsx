@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { Zap, Eye } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import StatusBadge from '@/components/shared/StatusBadge';
 import { Application } from '@/hooks/useApplicationData';
 
@@ -41,10 +41,7 @@ const ApplicationsTable: React.FC<ApplicationsTableProps> = ({
         {applications.map((app) => (
           <TableRow key={app.id} className="hover:bg-gray-50">
             <TableCell className="font-medium">
-              <div className="flex items-center gap-2">
-                {app.fastTrack && <Zap className="w-4 h-4 text-orange-500" />}
-                {app.id}
-              </div>
+              {app.id}
             </TableCell>
             <TableCell>
               <div>

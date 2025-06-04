@@ -83,7 +83,7 @@ const ApplicationDetail = () => {
                 <img 
                   src="/lovable-uploads/00adf838-6a5b-44a4-8209-15d1a7bd01fe.png" 
                   alt="ING Logo" 
-                  className="h-8 w-auto"
+                  className="h-8 w-auto -mt-1"
                 />
                 <h1 className="text-xl font-semibold text-gray-900">
                   Application Details - {currentApplication.id}

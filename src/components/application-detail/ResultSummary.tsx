@@ -253,42 +253,48 @@ const ResultSummary: React.FC = () => {
                   </div>
                 </div>
 
-                <AspectRatio ratio={210/297}>
-                  {documentType === 'Payment Slip' ? (
-                    <div className="relative w-full h-full">
-                      <img
-                        src="/lovable-uploads/df41c8c1-77eb-476b-9f21-73ccbcf0ad2a.png"
-                        alt="Payment Slip Document"
-                        className="w-full h-full object-contain border rounded-lg transition-transform duration-200"
-                        style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'center' }}
-                      />
-                      {/* Highlight overlay for hovered fields */}
-                      {highlightedField && (
-                        <div 
-                          className="absolute border-2 border-orange-500 bg-orange-200 bg-opacity-30 rounded transition-all duration-200"
-                          style={{
-                            // Position based on the highlighted field
-                            top: highlightedField === 'grossSalary' ? '25%' : 
-                                 highlightedField === 'employerName' ? '15%' : '35%',
-                            left: '20%',
-                            width: '60%',
-                            height: '8%',
+                <div className="overflow-hidden">
+                  <AspectRatio ratio={210/297}>
+                    {documentType === 'Payment Slip' ? (
+                      <div className="relative w-full h-full overflow-hidden">
+                        <img
+                          src="/lovable-uploads/df41c8c1-77eb-476b-9f21-73ccbcf0ad2a.png"
+                          alt="Payment Slip Document"
+                          className="w-full h-full object-contain border rounded-lg transition-transform duration-200 origin-center"
+                          style={{ 
                             transform: `scale(${zoomLevel / 100})`,
-                            transformOrigin: 'center'
+                            maxWidth: '100%',
+                            maxHeight: '100%'
                           }}
                         />
-                      )}
-                    </div>
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border">
-                      <div className="text-center text-gray-500">
-                        <DocumentIcon className="w-16 h-16 mx-auto mb-3 text-gray-400" />
-                        <p className="text-lg font-medium">PDF Preview</p>
-                        <p className="text-sm">{documentType}</p>
+                        {/* Highlight overlay for hovered fields */}
+                        {highlightedField && (
+                          <div 
+                            className="absolute border-2 border-orange-500 bg-orange-200 bg-opacity-30 rounded transition-all duration-200 pointer-events-none"
+                            style={{
+                              // Position based on the highlighted field
+                              top: highlightedField === 'grossSalary' ? '25%' : 
+                                   highlightedField === 'employerName' ? '15%' : '35%',
+                              left: '20%',
+                              width: '60%',
+                              height: '8%',
+                              transform: `scale(${zoomLevel / 100})`,
+                              transformOrigin: 'center'
+                            }}
+                          />
+                        )}
                       </div>
-                    </div>
-                  )}
-                </AspectRatio>
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border overflow-hidden">
+                        <div className="text-center text-gray-500" style={{ transform: `scale(${Math.min(zoomLevel / 100, 1)})` }}>
+                          <DocumentIcon className="w-16 h-16 mx-auto mb-3 text-gray-400" />
+                          <p className="text-lg font-medium">PDF Preview</p>
+                          <p className="text-sm">{documentType}</p>
+                        </div>
+                      </div>
+                    )}
+                  </AspectRatio>
+                </div>
               </div>
             </div>
 
@@ -296,57 +302,57 @@ const ResultSummary: React.FC = () => {
             <div>
               <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <Bot className="w-5 h-5 text-orange-600" />
-                AI Extracted Information
+                🎯 AI Extracted Intelligence
               </h4>
               <div className="space-y-4">
                 {/* Document Status Overview */}
                 <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4">
                   <div className="flex items-center gap-2 mb-3">
                     <CheckCircle className="w-5 h-5 text-green-600" />
-                    <h5 className="font-semibold text-green-800">Document Verified</h5>
+                    <h5 className="font-semibold text-green-800">✅ Document Verified</h5>
                   </div>
                   <div className="grid grid-cols-2 gap-3 text-sm">
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4 text-green-600" />
-                      <span className="text-green-700">Processing: 2.3s</span>
+                      <span className="text-green-700">⚡ Processing: 2.3s</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Bot className="w-4 h-4 text-green-600" />
-                      <span className="text-green-700">Confidence: 98.5%</span>
+                      <span className="text-green-700">🎯 Confidence: 98.5%</span>
                     </div>
                   </div>
                 </div>
                 
                 {/* Document Details */}
-                <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                <div className="bg-white border border-orange-200 rounded-xl p-5 shadow-sm">
                   <div className="flex items-center gap-2 mb-3">
                     <DocumentIcon className="w-5 h-5 text-orange-600" />
-                    <h5 className="font-semibold text-gray-800">Document Details</h5>
+                    <h5 className="font-semibold text-gray-800">📄 Document Details</h5>
                   </div>
                   <div className="space-y-3 text-sm">
-                    <div className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
+                    <div className="flex justify-between items-center p-2 bg-orange-50 rounded-lg">
                       <span className="text-gray-600 font-medium">Document Type:</span>
                       <span className="font-semibold text-gray-900 bg-orange-100 text-orange-800 px-2 py-1 rounded-md text-xs">{documentType}</span>
                     </div>
-                    <div className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
+                    <div className="flex justify-between items-center p-2 bg-orange-50 rounded-lg">
                       <span className="text-gray-600 font-medium">Date Range:</span>
-                      <span className="font-semibold text-gray-900">Jan 2024 - Mar 2024</span>
+                      <span className="font-semibold text-gray-900">📅 Jan 2024 - Mar 2024</span>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-green-50 rounded-lg">
                       <span className="text-gray-600 font-medium">Validation Status:</span>
                       <span className="text-green-700 font-semibold flex items-center gap-1">
                         <CheckCircle className="w-4 h-4" />
-                        Verified
+                        ✅ Verified
                       </span>
                     </div>
                   </div>
                 </div>
 
                 {/* Key Information Extracted */}
-                <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                <div className="bg-white border border-orange-200 rounded-xl p-5 shadow-sm">
                   <div className="flex items-center gap-2 mb-3">
                     <AlertCircle className="w-5 h-5 text-orange-600" />
-                    <h5 className="font-semibold text-gray-800">Key Information</h5>
+                    <h5 className="font-semibold text-gray-800">🔍 Key Information</h5>
                   </div>
                   <div className="space-y-3 text-sm">
                     {Object.entries(specificData).slice(0, 6).map(([key, value]) => (
@@ -358,7 +364,7 @@ const ResultSummary: React.FC = () => {
                         onMouseEnter={() => handleFieldHover(key)}
                         onMouseLeave={() => handleFieldHover(null)}
                       >
-                        <span className="text-gray-600 font-medium capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
+                        <span className="text-gray-600 font-medium capitalize">💰 {key.replace(/([A-Z])/g, ' $1').trim()}:</span>
                         <span className="font-semibold text-gray-900 bg-orange-100 px-2 py-1 rounded text-xs">{value}</span>
                       </div>
                     ))}
@@ -367,10 +373,10 @@ const ResultSummary: React.FC = () => {
 
                 {/* Additional Details */}
                 {Object.entries(specificData).length > 6 && (
-                  <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                  <div className="bg-white border border-orange-200 rounded-xl p-5 shadow-sm">
                     <div className="flex items-center gap-2 mb-3">
                       <FileText className="w-5 h-5 text-orange-600" />
-                      <h5 className="font-semibold text-gray-800">Additional Details</h5>
+                      <h5 className="font-semibold text-gray-800">📋 Additional Details</h5>
                     </div>
                     <div className="space-y-2 text-sm">
                       {Object.entries(specificData).slice(6).map(([key, value]) => (
@@ -382,7 +388,7 @@ const ResultSummary: React.FC = () => {
                           onMouseEnter={() => handleFieldHover(key)}
                           onMouseLeave={() => handleFieldHover(null)}
                         >
-                          <span className="text-gray-600 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
+                          <span className="text-gray-600 capitalize">📝 {key.replace(/([A-Z])/g, ' $1').trim()}:</span>
                           <span className="font-medium text-gray-900">{value}</span>
                         </div>
                       ))}
