@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrendingUp, Calculator, FileText, DollarSign, Shield, Bot, ChevronDown, ChevronUp, ZoomIn, ZoomOut, Download, CheckCircle, AlertCircle, Clock, Building, User, CreditCard } from 'lucide-react';
@@ -172,7 +173,7 @@ const ResultSummary: React.FC = () => {
                 <FileText className="w-5 h-5 text-orange-600" />
                 Document Preview
               </h4>
-              <div className="bg-white border border-gray-200 rounded-xl p-6 relative shadow-sm">
+              <div className="bg-white border border-gray-200 rounded-xl p-6 relative shadow-sm overflow-hidden">
                 
                 {/* PDF Controls - always visible and centered */}
                 <div className="flex justify-center mb-6">
@@ -302,23 +303,23 @@ const ResultSummary: React.FC = () => {
             <div>
               <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <Bot className="w-5 h-5 text-orange-600" />
-                🎯 AI Extracted Intelligence
+                AI Extracted Intelligence
               </h4>
               <div className="space-y-4">
                 {/* Document Status Overview */}
                 <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4">
                   <div className="flex items-center gap-2 mb-3">
                     <CheckCircle className="w-5 h-5 text-green-600" />
-                    <h5 className="font-semibold text-green-800">✅ Document Verified</h5>
+                    <h5 className="font-semibold text-green-800">Document Verified</h5>
                   </div>
                   <div className="grid grid-cols-2 gap-3 text-sm">
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4 text-green-600" />
-                      <span className="text-green-700">⚡ Processing: 2.3s</span>
+                      <span className="text-green-700">Processing: 2.3s</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Bot className="w-4 h-4 text-green-600" />
-                      <span className="text-green-700">🎯 Confidence: 98.5%</span>
+                      <span className="text-green-700">Confidence: 98.5%</span>
                     </div>
                   </div>
                 </div>
@@ -327,7 +328,7 @@ const ResultSummary: React.FC = () => {
                 <div className="bg-white border border-orange-200 rounded-xl p-5 shadow-sm">
                   <div className="flex items-center gap-2 mb-3">
                     <DocumentIcon className="w-5 h-5 text-orange-600" />
-                    <h5 className="font-semibold text-gray-800">📄 Document Details</h5>
+                    <h5 className="font-semibold text-gray-800">Document Details</h5>
                   </div>
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between items-center p-2 bg-orange-50 rounded-lg">
@@ -336,13 +337,13 @@ const ResultSummary: React.FC = () => {
                     </div>
                     <div className="flex justify-between items-center p-2 bg-orange-50 rounded-lg">
                       <span className="text-gray-600 font-medium">Date Range:</span>
-                      <span className="font-semibold text-gray-900">📅 Jan 2024 - Mar 2024</span>
+                      <span className="font-semibold text-gray-900">Jan 2024 - Mar 2024</span>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-green-50 rounded-lg">
                       <span className="text-gray-600 font-medium">Validation Status:</span>
                       <span className="text-green-700 font-semibold flex items-center gap-1">
                         <CheckCircle className="w-4 h-4" />
-                        ✅ Verified
+                        Verified
                       </span>
                     </div>
                   </div>
@@ -352,7 +353,7 @@ const ResultSummary: React.FC = () => {
                 <div className="bg-white border border-orange-200 rounded-xl p-5 shadow-sm">
                   <div className="flex items-center gap-2 mb-3">
                     <AlertCircle className="w-5 h-5 text-orange-600" />
-                    <h5 className="font-semibold text-gray-800">🔍 Key Information</h5>
+                    <h5 className="font-semibold text-gray-800">Key Information</h5>
                   </div>
                   <div className="space-y-3 text-sm">
                     {Object.entries(specificData).slice(0, 6).map(([key, value]) => (
@@ -364,7 +365,7 @@ const ResultSummary: React.FC = () => {
                         onMouseEnter={() => handleFieldHover(key)}
                         onMouseLeave={() => handleFieldHover(null)}
                       >
-                        <span className="text-gray-600 font-medium capitalize">💰 {key.replace(/([A-Z])/g, ' $1').trim()}:</span>
+                        <span className="text-gray-600 font-medium capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
                         <span className="font-semibold text-gray-900 bg-orange-100 px-2 py-1 rounded text-xs">{value}</span>
                       </div>
                     ))}
@@ -376,7 +377,7 @@ const ResultSummary: React.FC = () => {
                   <div className="bg-white border border-orange-200 rounded-xl p-5 shadow-sm">
                     <div className="flex items-center gap-2 mb-3">
                       <FileText className="w-5 h-5 text-orange-600" />
-                      <h5 className="font-semibold text-gray-800">📋 Additional Details</h5>
+                      <h5 className="font-semibold text-gray-800">Additional Details</h5>
                     </div>
                     <div className="space-y-2 text-sm">
                       {Object.entries(specificData).slice(6).map(([key, value]) => (
@@ -388,7 +389,7 @@ const ResultSummary: React.FC = () => {
                           onMouseEnter={() => handleFieldHover(key)}
                           onMouseLeave={() => handleFieldHover(null)}
                         >
-                          <span className="text-gray-600 capitalize">📝 {key.replace(/([A-Z])/g, ' $1').trim()}:</span>
+                          <span className="text-gray-600 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
                           <span className="font-medium text-gray-900">{value}</span>
                         </div>
                       ))}
