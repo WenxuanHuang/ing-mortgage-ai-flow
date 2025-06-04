@@ -3,7 +3,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-import { SidebarProvider, Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar';
+import { SidebarProvider, Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from '@/components/ui/sidebar';
 import ApplicationDetailView from '@/components/ApplicationDetailView';
 import { useApplicationData } from '@/hooks/useApplicationData';
 
@@ -34,25 +34,9 @@ const ApplicationDetail = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4 relative z-10">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4 ml-64">
-            <img 
-              src="/lovable-uploads/00adf838-6a5b-44a4-8209-15d1a7bd01fe.png" 
-              alt="ING Logo" 
-              className="h-8 w-auto"
-            />
-            <h1 className="text-xl font-semibold text-gray-900">
-              Application Details - {currentApplication.id}
-            </h1>
-          </div>
-        </div>
-      </header>
-
-      <SidebarProvider>
-        <div className="flex min-h-[calc(100vh-80px)] w-full">
-          <Sidebar className="w-64 border-r border-gray-200 flex-shrink-0">
+      <SidebarProvider defaultOpen={false}>
+        <div className="flex min-h-screen w-full">
+          <Sidebar className="border-r border-gray-200 flex-shrink-0">
             <SidebarHeader className="p-3 border-b border-gray-200">
               <div className="flex items-center gap-3">
                 <Button variant="ghost" size="sm" onClick={() => navigate('/')}>
@@ -91,9 +75,26 @@ const ApplicationDetail = () => {
             </SidebarContent>
           </Sidebar>
 
-          <main className="flex-1 p-6 overflow-auto min-w-0">
-            <ApplicationDetailView application={currentApplication} />
-          </main>
+          <div className="flex-1 flex flex-col">
+            {/* Header */}
+            <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <SidebarTrigger />
+                <img 
+                  src="/lovable-uploads/00adf838-6a5b-44a4-8209-15d1a7bd01fe.png" 
+                  alt="ING Logo" 
+                  className="h-8 w-auto"
+                />
+                <h1 className="text-xl font-semibold text-gray-900">
+                  Application Details - {currentApplication.id}
+                </h1>
+              </div>
+            </header>
+
+            <main className="flex-1 p-6 overflow-auto min-w-0">
+              <ApplicationDetailView application={currentApplication} />
+            </main>
+          </div>
         </div>
       </SidebarProvider>
     </div>

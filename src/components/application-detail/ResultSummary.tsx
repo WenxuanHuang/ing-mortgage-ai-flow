@@ -8,7 +8,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 const ResultSummary: React.FC = () => {
   const [expandedDocument, setExpandedDocument] = useState<string | null>(null);
   const [zoomLevel, setZoomLevel] = useState(100);
-  const [showControls, setShowControls] = useState(false);
   
   const mockResultData = {
     maxLoanAmount: 420000,
@@ -74,12 +73,10 @@ const ResultSummary: React.FC = () => {
 
   const handleAIExtraction = () => {
     console.log('AI extraction triggered for document');
-    // Here you would implement the AI extraction functionality
   };
 
   const handleDownload = () => {
     console.log('Download triggered for document');
-    // Here you would implement the download functionality
   };
 
   const getDocumentSpecificData = (documentType: string) => {
@@ -148,165 +145,168 @@ const ResultSummary: React.FC = () => {
     return (
       <div className="mt-4 border border-gray-200 rounded-lg bg-gray-50 w-full">
         <div className="p-4">
-          {/* AI Extracted Information first - full width row */}
-          <div className="mb-6">
-            <h4 className="font-medium text-gray-900 mb-3">AI Extracted Information</h4>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <div className="bg-white border rounded-lg p-4">
-                <h5 className="font-medium text-sm text-gray-700 mb-2">Document Details</h5>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Document Type:</span>
-                    <span className="font-medium">{documentType}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Date Range:</span>
-                    <span className="font-medium">Jan 2024 - Mar 2024</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Validation Status:</span>
-                    <span className="text-green-600 font-medium">Verified</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Confidence Score:</span>
-                    <span className="font-medium">98.5%</span>
+          {/* Two column layout: PDF preview on left, extracted info on right */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Left side - Document Preview */}
+            <div>
+              <h4 className="font-medium text-gray-900 mb-3">Document Preview</h4>
+              <div className="bg-white border rounded-lg p-6 relative">
+                
+                {/* PDF Controls - always visible and centered */}
+                <div className="flex justify-center mb-4">
+                  <div className="bg-gray-800 rounded-lg p-2 flex items-center gap-2 shadow-lg">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-white hover:bg-gray-700 h-8 w-8 p-0"
+                            onClick={handleZoomOut}
+                          >
+                            <ZoomOut className="w-4 h-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Zoom Out</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-white hover:bg-gray-700 h-8 w-8 p-0"
+                            onClick={handleZoomIn}
+                          >
+                            <ZoomIn className="w-4 h-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Zoom In</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+
+                    <div className="w-px h-6 bg-gray-600"></div>
+
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-white hover:bg-gray-700 h-8 w-8 p-0"
+                            onClick={handleAIExtraction}
+                          >
+                            <Bot className="w-4 h-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>AI Extraction</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-white hover:bg-gray-700 h-8 w-8 p-0"
+                            onClick={handleDownload}
+                          >
+                            <Download className="w-4 h-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Download</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </div>
                 </div>
-              </div>
-              
-              <div className="bg-white border rounded-lg p-4">
-                <h5 className="font-medium text-sm text-gray-700 mb-2">Extracted Data Fields</h5>
-                <div className="space-y-2 text-sm">
-                  {Object.entries(specificData).slice(0, 4).map(([key, value]) => (
-                    <div key={key} className="flex justify-between">
-                      <span className="text-gray-600 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
-                      <span className="font-medium">{value}</span>
+
+                <AspectRatio ratio={210/297}>
+                  {documentType === 'Payment Slip' ? (
+                    <img
+                      src="/lovable-uploads/df41c8c1-77eb-476b-9f21-73ccbcf0ad2a.png"
+                      alt="Payment Slip Document"
+                      className="w-full h-full object-contain border rounded transition-transform duration-200"
+                      style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'center' }}
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gray-50">
+                      <div className="text-center text-gray-500">
+                        <FileText className="w-16 h-16 mx-auto mb-3" />
+                        <p className="text-lg font-medium">PDF Preview</p>
+                        <p className="text-sm">{documentType}</p>
+                      </div>
                     </div>
-                  ))}
-                </div>
+                  )}
+                </AspectRatio>
               </div>
             </div>
-            
-            {/* Additional fields if more than 4 */}
-            {Object.entries(specificData).length > 4 && (
-              <div className="mt-4 bg-white border rounded-lg p-4">
-                <h5 className="font-medium text-sm text-gray-700 mb-2">Additional Information</h5>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-sm">
-                  {Object.entries(specificData).slice(4).map(([key, value]) => (
-                    <div key={key} className="flex justify-between">
-                      <span className="text-gray-600 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
-                      <span className="font-medium">{value}</span>
+
+            {/* Right side - AI Extracted Information in single column */}
+            <div>
+              <h4 className="font-medium text-gray-900 mb-3">AI Extracted Information</h4>
+              <div className="space-y-4">
+                {/* Document Details */}
+                <div className="bg-white border rounded-lg p-4">
+                  <h5 className="font-medium text-sm text-gray-700 mb-2">Document Details</h5>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Document Type:</span>
+                      <span className="font-medium">{documentType}</span>
                     </div>
-                  ))}
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Date Range:</span>
+                      <span className="font-medium">Jan 2024 - Mar 2024</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Validation Status:</span>
+                      <span className="text-green-600 font-medium">Verified</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Confidence Score:</span>
+                      <span className="font-medium">98.5%</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-
-          {/* Document Preview - full width below with A4 aspect ratio */}
-          <div>
-            <h4 className="font-medium text-gray-900 mb-3">Document Preview</h4>
-            <div className="bg-white border rounded-lg p-6 relative"
-                 onMouseEnter={() => setShowControls(true)}
-                 onMouseLeave={() => setShowControls(false)}>
-              
-              {/* PDF Controls Overlay */}
-              {showControls && (
-                <div className="absolute top-4 right-4 z-10 bg-gray-800 rounded-lg p-2 flex items-center gap-2 shadow-lg">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-white hover:bg-gray-700 h-8 w-8 p-0"
-                          onClick={handleZoomOut}
-                        >
-                          <ZoomOut className="w-4 h-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Zoom Out</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-white hover:bg-gray-700 h-8 w-8 p-0"
-                          onClick={handleZoomIn}
-                        >
-                          <ZoomIn className="w-4 h-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Zoom In</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-
-                  <div className="w-px h-6 bg-gray-600"></div>
-
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-white hover:bg-gray-700 h-8 w-8 p-0"
-                          onClick={handleAIExtraction}
-                        >
-                          <Bot className="w-4 h-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>AI Extraction</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-white hover:bg-gray-700 h-8 w-8 p-0"
-                          onClick={handleDownload}
-                        >
-                          <Download className="w-4 h-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Download</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                
+                {/* Extracted Data Fields */}
+                <div className="bg-white border rounded-lg p-4">
+                  <h5 className="font-medium text-sm text-gray-700 mb-2">Extracted Data Fields</h5>
+                  <div className="space-y-2 text-sm">
+                    {Object.entries(specificData).slice(0, 6).map(([key, value]) => (
+                      <div key={key} className="flex justify-between">
+                        <span className="text-gray-600 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
+                        <span className="font-medium">{value}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              )}
 
-              <AspectRatio ratio={210/297}>
-                {documentType === 'Payment Slip' ? (
-                  <img
-                    src="/lovable-uploads/df41c8c1-77eb-476b-9f21-73ccbcf0ad2a.png"
-                    alt="Payment Slip Document"
-                    className="w-full h-full object-contain border rounded transition-transform duration-200"
-                    style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'center' }}
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gray-50">
-                    <div className="text-center text-gray-500">
-                      <FileText className="w-16 h-16 mx-auto mb-3" />
-                      <p className="text-lg font-medium">PDF Preview</p>
-                      <p className="text-sm">{documentType}</p>
+                {/* Additional Information */}
+                {Object.entries(specificData).length > 6 && (
+                  <div className="bg-white border rounded-lg p-4">
+                    <h5 className="font-medium text-sm text-gray-700 mb-2">Additional Information</h5>
+                    <div className="space-y-2 text-sm">
+                      {Object.entries(specificData).slice(6).map(([key, value]) => (
+                        <div key={key} className="flex justify-between">
+                          <span className="text-gray-600 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
+                          <span className="font-medium">{value}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )}
-              </AspectRatio>
+              </div>
             </div>
           </div>
         </div>
