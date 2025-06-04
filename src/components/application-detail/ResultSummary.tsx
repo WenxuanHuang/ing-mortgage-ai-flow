@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrendingUp, Calculator, FileText, DollarSign, Shield, Bot, ChevronDown, ChevronUp, ZoomIn, ZoomOut, Download, CheckCircle, AlertCircle, Clock, Building, User, CreditCard } from 'lucide-react';
@@ -438,15 +437,14 @@ const ResultSummary: React.FC = () => {
                   <span className="font-medium text-gray-900">AI Guidance</span>
                 </div>
                 <p className="text-sm text-gray-700 mb-2">
-                  <strong>Suggested Maximum Loan Amount:</strong> €{suggestedLoanAmount.toLocaleString()}
+                  <strong>Suggested Maximum Loan Amount:</strong> <span className="text-red-600 font-bold">€{suggestedLoanAmount.toLocaleString()}</span>
                 </p>
                 <p className="text-sm text-gray-600">
                   To achieve the optimal 5x loan-to-income ratio based on the final income assessment of 
                   €{mockResultData.incomeAnalysis.finalEstimate.annualIncome.toLocaleString()}, 
                   the recommended maximum loan amount is €{suggestedLoanAmount.toLocaleString()}. 
                   This {requestedLoanToIncomeRatio > targetRatio ? 'reduces' : 'increases'} the current amount by 
-                  €{Math.abs(suggestedLoanAmount - mockResultData.requestedAmount).toLocaleString()} 
-                  to align with sustainable lending practices.
+                  €{Math.abs(suggestedLoanAmount - mockResultData.requestedAmount).toLocaleString()} to align with sustainable lending practices.
                 </p>
               </div>
             </div>
