@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrendingUp, Calculator, FileText, DollarSign, Shield, Bot, ChevronDown, ChevronUp, ZoomIn, ZoomOut, Download, CheckCircle, AlertCircle, Clock, Building, User, CreditCard } from 'lucide-react';
@@ -8,6 +9,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 const ResultSummary: React.FC = () => {
   const [expandedDocument, setExpandedDocument] = useState<string | null>(null);
   const [zoomLevel, setZoomLevel] = useState(100);
+  const [highlightedField, setHighlightedField] = useState<string | null>(null);
   
   const mockResultData = {
     maxLoanAmount: 420000,
@@ -152,6 +154,10 @@ const ResultSummary: React.FC = () => {
     }
   };
 
+  const handleFieldHover = (fieldKey: string | null) => {
+    setHighlightedField(fieldKey);
+  };
+
   const renderDocumentPreview = (documentType: string) => {
     const specificData = getDocumentSpecificData(documentType);
     const DocumentIcon = getDocumentIcon(documentType);
@@ -164,7 +170,7 @@ const ResultSummary: React.FC = () => {
             {/* Left side - Document Preview */}
             <div>
               <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <FileText className="w-5 h-5 text-blue-600" />
+                <FileText className="w-5 h-5 text-orange-600" />
                 Document Preview
               </h4>
               <div className="bg-white border border-gray-200 rounded-xl p-6 relative shadow-sm">
@@ -250,12 +256,30 @@ const ResultSummary: React.FC = () => {
 
                 <AspectRatio ratio={210/297}>
                   {documentType === 'Payment Slip' ? (
-                    <img
-                      src="/lovable-uploads/df41c8c1-77eb-476b-9f21-73ccbcf0ad2a.png"
-                      alt="Payment Slip Document"
-                      className="w-full h-full object-contain border rounded-lg transition-transform duration-200"
-                      style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'center' }}
-                    />
+                    <div className="relative w-full h-full">
+                      <img
+                        src="/lovable-uploads/df41c8c1-77eb-476b-9f21-73ccbcf0ad2a.png"
+                        alt="Payment Slip Document"
+                        className="w-full h-full object-contain border rounded-lg transition-transform duration-200"
+                        style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'center' }}
+                      />
+                      {/* Highlight overlay for hovered fields */}
+                      {highlightedField && (
+                        <div 
+                          className="absolute border-2 border-orange-500 bg-orange-200 bg-opacity-30 rounded transition-all duration-200"
+                          style={{
+                            // Position based on the highlighted field
+                            top: highlightedField === 'grossSalary' ? '25%' : 
+                                 highlightedField === 'employerName' ? '15%' : '35%',
+                            left: '20%',
+                            width: '60%',
+                            height: '8%',
+                            transform: `scale(${zoomLevel / 100})`,
+                            transformOrigin: 'center'
+                          }}
+                        />
+                      )}
+                    </div>
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border">
                       <div className="text-center text-gray-500">
@@ -272,7 +296,7 @@ const ResultSummary: React.FC = () => {
             {/* Right side - AI Extracted Information in single column */}
             <div>
               <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <Bot className="w-5 h-5 text-purple-600" />
+                <Bot className="w-5 h-5 text-orange-600" />
                 AI Extracted Information
               </h4>
               <div className="space-y-4">
@@ -297,13 +321,13 @@ const ResultSummary: React.FC = () => {
                 {/* Document Details */}
                 <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
                   <div className="flex items-center gap-2 mb-3">
-                    <DocumentIcon className="w-5 h-5 text-blue-600" />
+                    <DocumentIcon className="w-5 h-5 text-orange-600" />
                     <h5 className="font-semibold text-gray-800">Document Details</h5>
                   </div>
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
                       <span className="text-gray-600 font-medium">Document Type:</span>
-                      <span className="font-semibold text-gray-900 bg-blue-100 text-blue-800 px-2 py-1 rounded-md text-xs">{documentType}</span>
+                      <span className="font-semibold text-gray-900 bg-orange-100 text-orange-800 px-2 py-1 rounded-md text-xs">{documentType}</span>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
                       <span className="text-gray-600 font-medium">Date Range:</span>
@@ -327,9 +351,16 @@ const ResultSummary: React.FC = () => {
                   </div>
                   <div className="space-y-3 text-sm">
                     {Object.entries(specificData).slice(0, 6).map(([key, value]) => (
-                      <div key={key} className="flex justify-between items-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                      <div 
+                        key={key} 
+                        className={`flex justify-between items-center p-2 hover:bg-orange-50 rounded-lg transition-colors cursor-pointer ${
+                          highlightedField === key ? 'bg-orange-100 border border-orange-300' : ''
+                        }`}
+                        onMouseEnter={() => handleFieldHover(key)}
+                        onMouseLeave={() => handleFieldHover(null)}
+                      >
                         <span className="text-gray-600 font-medium capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
-                        <span className="font-semibold text-gray-900 bg-gray-100 px-2 py-1 rounded text-xs">{value}</span>
+                        <span className="font-semibold text-gray-900 bg-orange-100 px-2 py-1 rounded text-xs">{value}</span>
                       </div>
                     ))}
                   </div>
@@ -339,12 +370,19 @@ const ResultSummary: React.FC = () => {
                 {Object.entries(specificData).length > 6 && (
                   <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
                     <div className="flex items-center gap-2 mb-3">
-                      <FileText className="w-5 h-5 text-gray-600" />
+                      <FileText className="w-5 h-5 text-orange-600" />
                       <h5 className="font-semibold text-gray-800">Additional Details</h5>
                     </div>
                     <div className="space-y-2 text-sm">
                       {Object.entries(specificData).slice(6).map(([key, value]) => (
-                        <div key={key} className="flex justify-between items-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                        <div 
+                          key={key} 
+                          className={`flex justify-between items-center p-2 hover:bg-orange-50 rounded-lg transition-colors cursor-pointer ${
+                            highlightedField === key ? 'bg-orange-100 border border-orange-300' : ''
+                          }`}
+                          onMouseEnter={() => handleFieldHover(key)}
+                          onMouseLeave={() => handleFieldHover(null)}
+                        >
                           <span className="text-gray-600 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
                           <span className="font-medium text-gray-900">{value}</span>
                         </div>

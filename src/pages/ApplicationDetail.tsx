@@ -39,9 +39,6 @@ const ApplicationDetail = () => {
           <Sidebar className="border-r border-gray-200 flex-shrink-0">
             <SidebarHeader className="p-3 border-b border-gray-200">
               <div className="flex items-center gap-3">
-                <Button variant="ghost" size="sm" onClick={() => navigate('/')}>
-                  <ArrowLeft className="w-4 h-4" />
-                </Button>
                 <h2 className="font-semibold text-gray-900 text-sm">All Applications</h2>
               </div>
             </SidebarHeader>
