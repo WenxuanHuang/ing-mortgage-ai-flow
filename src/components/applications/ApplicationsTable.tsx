@@ -1,11 +1,10 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Zap, Eye } from 'lucide-react';
 import StatusBadge from '@/components/shared/StatusBadge';
-import ApplicationDetailView from '@/components/ApplicationDetailView';
 import { Application } from '@/hooks/useApplicationData';
 
 interface ApplicationsTableProps {
@@ -17,6 +16,13 @@ const ApplicationsTable: React.FC<ApplicationsTableProps> = ({
   applications, 
   onSelectApplication 
 }) => {
+  const navigate = useNavigate();
+
+  const handleViewApplication = (app: Application) => {
+    onSelectApplication(app);
+    navigate(`/application/${app.id}`);
+  };
+
   return (
     <Table>
       <TableHeader>
@@ -76,19 +82,13 @@ const ApplicationsTable: React.FC<ApplicationsTableProps> = ({
               </div>
             </TableCell>
             <TableCell>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button size="sm" variant="outline" onClick={() => onSelectApplication(app)}>
-                    <Eye className="w-4 h-4" />
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
-                  <DialogHeader>
-                    <DialogTitle>Application Details - {app.id}</DialogTitle>
-                  </DialogHeader>
-                  <ApplicationDetailView application={app} />
-                </DialogContent>
-              </Dialog>
+              <Button 
+                size="sm" 
+                variant="outline" 
+                onClick={() => handleViewApplication(app)}
+              >
+                <Eye className="w-4 h-4" />
+              </Button>
             </TableCell>
           </TableRow>
         ))}
