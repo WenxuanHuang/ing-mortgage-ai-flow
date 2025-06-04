@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrendingUp, Calculator, FileText, DollarSign, Shield, Bot, ChevronDown, ChevronUp } from 'lucide-react';
@@ -67,51 +66,51 @@ const ResultSummary: React.FC = () => {
   const renderDocumentPreview = (documentType: string) => {
     return (
       <div className="mt-4 p-4 bg-gray-50 rounded-lg border-t">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div>
-            <h4 className="font-medium text-gray-900 mb-3">Document Preview</h4>
-            <div className="bg-white border rounded-lg p-4 h-64 flex items-center justify-center">
-              <div className="text-center text-gray-500">
-                <FileText className="w-12 h-12 mx-auto mb-2" />
-                <p className="text-sm">PDF Preview</p>
-                <p className="text-xs">{documentType}</p>
-              </div>
-            </div>
-          </div>
-          
-          <div>
-            <h4 className="font-medium text-gray-900 mb-3">AI Extracted Information</h4>
-            <div className="space-y-4">
-              <div className="bg-white border rounded-lg p-4">
-                <h5 className="font-medium text-sm text-gray-700 mb-2">Key Data Points</h5>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Document Type:</span>
-                    <span className="font-medium">{documentType}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Date Range:</span>
-                    <span className="font-medium">Jan 2024 - Mar 2024</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Validation Status:</span>
-                    <span className="text-green-600 font-medium">Verified</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Confidence Score:</span>
-                    <span className="font-medium">98.5%</span>
-                  </div>
+        {/* AI Extracted Information first - full width row */}
+        <div className="mb-6">
+          <h4 className="font-medium text-gray-900 mb-3">AI Extracted Information</h4>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="bg-white border rounded-lg p-4">
+              <h5 className="font-medium text-sm text-gray-700 mb-2">Key Data Points</h5>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Document Type:</span>
+                  <span className="font-medium">{documentType}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Date Range:</span>
+                  <span className="font-medium">Jan 2024 - Mar 2024</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Validation Status:</span>
+                  <span className="text-green-600 font-medium">Verified</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Confidence Score:</span>
+                  <span className="font-medium">98.5%</span>
                 </div>
               </div>
-              
-              <div className="bg-white border rounded-lg p-4">
-                <h5 className="font-medium text-sm text-gray-700 mb-2">Analysis Notes</h5>
-                <p className="text-sm text-gray-600">
-                  Document authenticity verified through digital signature validation. 
-                  Income patterns show consistent monthly deposits. All required fields 
-                  successfully extracted with high confidence.
-                </p>
-              </div>
+            </div>
+            
+            <div className="bg-white border rounded-lg p-4">
+              <h5 className="font-medium text-sm text-gray-700 mb-2">Analysis Notes</h5>
+              <p className="text-sm text-gray-600">
+                Document authenticity verified through digital signature validation. 
+                Income patterns show consistent monthly deposits. All required fields 
+                successfully extracted with high confidence.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Document Preview - full width below */}
+        <div>
+          <h4 className="font-medium text-gray-900 mb-3">Document Preview</h4>
+          <div className="bg-white border rounded-lg p-6 h-80 flex items-center justify-center">
+            <div className="text-center text-gray-500">
+              <FileText className="w-16 h-16 mx-auto mb-3" />
+              <p className="text-lg font-medium">PDF Preview</p>
+              <p className="text-sm">{documentType}</p>
             </div>
           </div>
         </div>
@@ -121,7 +120,7 @@ const ResultSummary: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Final Assessment - Updated styling to white/black */}
+      {/* Final Assessment */}
       <Card>
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
@@ -173,7 +172,7 @@ const ResultSummary: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Income Analysis Documents - Updated layout to horizontal */}
+      {/* Income Analysis Documents */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -184,7 +183,11 @@ const ResultSummary: React.FC = () => {
         <CardContent className="space-y-4">
           {/* Horizontal layout for document cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="border border-gray-200 cursor-pointer hover:shadow-md transition-shadow" 
+            <Card className={`cursor-pointer hover:shadow-md transition-all ${
+              expandedDocument === 'Bank Statement' 
+                ? 'border-ing-orange border-2 shadow-md' 
+                : 'border border-gray-200'
+            }`} 
                   onClick={() => handleDocumentClick('Bank Statement')}>
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg flex items-center justify-between">
@@ -224,7 +227,11 @@ const ResultSummary: React.FC = () => {
               </CardContent>
             </Card>
 
-            <Card className="border border-gray-200 cursor-pointer hover:shadow-md transition-shadow" 
+            <Card className={`cursor-pointer hover:shadow-md transition-all ${
+              expandedDocument === 'Payment Slip' 
+                ? 'border-ing-orange border-2 shadow-md' 
+                : 'border border-gray-200'
+            }`} 
                   onClick={() => handleDocumentClick('Payment Slip')}>
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg flex items-center justify-between">
@@ -264,7 +271,11 @@ const ResultSummary: React.FC = () => {
               </CardContent>
             </Card>
 
-            <Card className="border border-gray-200 cursor-pointer hover:shadow-md transition-shadow" 
+            <Card className={`cursor-pointer hover:shadow-md transition-all ${
+              expandedDocument === 'Employer Statement' 
+                ? 'border-ing-orange border-2 shadow-md' 
+                : 'border border-gray-200'
+            }`} 
                   onClick={() => handleDocumentClick('Employer Statement')}>
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg flex items-center justify-between">
