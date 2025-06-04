@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrendingUp, Calculator, FileText, DollarSign, Shield, Bot, ChevronDown, ChevronUp } from 'lucide-react';
@@ -61,63 +60,125 @@ const ResultSummary: React.FC = () => {
   const needsAdjustment = Math.abs(requestedLoanToIncomeRatio - targetRatio) > 0.2;
   const isRatioHigh = requestedLoanToIncomeRatio > 5;
 
+  const getDocumentSpecificData = (documentType: string) => {
+    switch (documentType) {
+      case 'Bank Statement':
+        return {
+          accountNumber: 'NL91 INGB 0002 4567 89',
+          statementPeriod: '01/01/2024 - 31/03/2024',
+          totalDeposits: '€12,450',
+          averageMonthlyBalance: '€8,750',
+          numberOfTransactions: '247',
+          salaryDeposits: '12',
+          regularIncome: '€4,150/month',
+          irregularIncome: '€300/month'
+        };
+      case 'Payment Slip':
+        return {
+          employerName: 'Tech Solutions BV',
+          employeeId: 'EMP-2024-0789',
+          payPeriod: 'March 2024',
+          grossSalary: '€4,000',
+          netSalary: '€3,200',
+          taxDeducted: '€600',
+          socialContributions: '€200',
+          pensionContribution: '€320'
+        };
+      case 'Employer Statement':
+        return {
+          companyName: 'Tech Solutions BV',
+          companyRegistration: 'KvK 12345678',
+          employmentStartDate: '15/06/2020',
+          contractType: 'Permanent Full-time',
+          workingHours: '40 hours/week',
+          probationPeriod: 'Completed',
+          nextSalaryReview: 'June 2024',
+          benefits: 'Health insurance, Pension'
+        };
+      default:
+        return {};
+    }
+  };
+
   const handleDocumentClick = (documentType: string) => {
     setExpandedDocument(expandedDocument === documentType ? null : documentType);
   };
 
   const renderDocumentPreview = (documentType: string) => {
+    const specificData = getDocumentSpecificData(documentType);
+    
     return (
-      <div className="mt-4 mx-4 p-4 bg-gray-50 rounded-lg border-t">
-        {/* AI Extracted Information first - full width row */}
-        <div className="mb-6">
-          <h4 className="font-medium text-gray-900 mb-3">AI Extracted Information</h4>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="bg-white border rounded-lg p-4">
-              <h5 className="font-medium text-sm text-gray-700 mb-2">Key Data Points</h5>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Document Type:</span>
-                  <span className="font-medium">{documentType}</span>
+      <div className="mt-4 border border-gray-200 rounded-lg bg-gray-50">
+        <div className="p-4">
+          {/* AI Extracted Information first - full width row */}
+          <div className="mb-6">
+            <h4 className="font-medium text-gray-900 mb-3">AI Extracted Information</h4>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="bg-white border rounded-lg p-4">
+                <h5 className="font-medium text-sm text-gray-700 mb-2">Document Details</h5>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Document Type:</span>
+                    <span className="font-medium">{documentType}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Date Range:</span>
+                    <span className="font-medium">Jan 2024 - Mar 2024</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Validation Status:</span>
+                    <span className="text-green-600 font-medium">Verified</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Confidence Score:</span>
+                    <span className="font-medium">98.5%</span>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Date Range:</span>
-                  <span className="font-medium">Jan 2024 - Mar 2024</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Validation Status:</span>
-                  <span className="text-green-600 font-medium">Verified</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Confidence Score:</span>
-                  <span className="font-medium">98.5%</span>
+              </div>
+              
+              <div className="bg-white border rounded-lg p-4">
+                <h5 className="font-medium text-sm text-gray-700 mb-2">Extracted Data Fields</h5>
+                <div className="space-y-2 text-sm">
+                  {Object.entries(specificData).slice(0, 4).map(([key, value]) => (
+                    <div key={key} className="flex justify-between">
+                      <span className="text-gray-600 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
+                      <span className="font-medium">{value}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
             
-            <div className="bg-white border rounded-lg p-4">
-              <h5 className="font-medium text-sm text-gray-700 mb-2">Analysis Notes</h5>
-              <p className="text-sm text-gray-600">
-                Document authenticity verified through digital signature validation. 
-                Income patterns show consistent monthly deposits. All required fields 
-                successfully extracted with high confidence.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Document Preview - full width below with A4 aspect ratio */}
-        <div>
-          <h4 className="font-medium text-gray-900 mb-3">Document Preview</h4>
-          <div className="bg-white border rounded-lg p-6">
-            <AspectRatio ratio={210/297}>
-              <div className="w-full h-full flex items-center justify-center bg-gray-50">
-                <div className="text-center text-gray-500">
-                  <FileText className="w-16 h-16 mx-auto mb-3" />
-                  <p className="text-lg font-medium">PDF Preview</p>
-                  <p className="text-sm">{documentType}</p>
+            {/* Additional fields if more than 4 */}
+            {Object.entries(specificData).length > 4 && (
+              <div className="mt-4 bg-white border rounded-lg p-4">
+                <h5 className="font-medium text-sm text-gray-700 mb-2">Additional Information</h5>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                  {Object.entries(specificData).slice(4).map(([key, value]) => (
+                    <div key={key} className="flex justify-between">
+                      <span className="text-gray-600 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
+                      <span className="font-medium">{value}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </AspectRatio>
+            )}
+          </div>
+
+          {/* Document Preview - full width below with A4 aspect ratio */}
+          <div>
+            <h4 className="font-medium text-gray-900 mb-3">Document Preview</h4>
+            <div className="bg-white border rounded-lg p-6">
+              <AspectRatio ratio={210/297}>
+                <div className="w-full h-full flex items-center justify-center bg-gray-50">
+                  <div className="text-center text-gray-500">
+                    <FileText className="w-16 h-16 mx-auto mb-3" />
+                    <p className="text-lg font-medium">PDF Preview</p>
+                    <p className="text-sm">{documentType}</p>
+                  </div>
+                </div>
+              </AspectRatio>
+            </div>
           </div>
         </div>
       </div>
@@ -158,7 +219,7 @@ const ResultSummary: React.FC = () => {
 
           {needsAdjustment && (
             <div className="pt-4 border-t border-gray-200">
-              <div className="bg-ing-light-orange p-4 rounded border border-ing-orange">
+              <div className="bg-ing-light-orange p-4 rounded">
                 <div className="flex items-center gap-2 mb-2">
                   <Bot className="w-4 h-4 text-ing-orange" />
                   <span className="font-medium text-gray-900">AI Guidance</span>
