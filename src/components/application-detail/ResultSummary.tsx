@@ -1,14 +1,15 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrendingUp, Calculator, FileText, DollarSign, Shield, Bot, ChevronDown, ChevronUp } from 'lucide-react';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 const ResultSummary: React.FC = () => {
   const [expandedDocument, setExpandedDocument] = useState<string | null>(null);
   
   const mockResultData = {
     maxLoanAmount: 420000,
-    requestedAmount: 300000, // Updated to 300,000 euros
+    requestedAmount: 300000,
     loanToValue: 85,
     propertyValue: 525000,
     monthlyPayment: 1680,
@@ -58,6 +59,7 @@ const ResultSummary: React.FC = () => {
   const targetRatio = 5.0;
   const suggestedLoanAmount = mockResultData.incomeAnalysis.finalEstimate.annualIncome * targetRatio;
   const needsAdjustment = Math.abs(requestedLoanToIncomeRatio - targetRatio) > 0.2;
+  const isRatioHigh = requestedLoanToIncomeRatio > 5;
 
   const handleDocumentClick = (documentType: string) => {
     setExpandedDocument(expandedDocument === documentType ? null : documentType);
@@ -65,7 +67,7 @@ const ResultSummary: React.FC = () => {
 
   const renderDocumentPreview = (documentType: string) => {
     return (
-      <div className="mt-4 p-4 bg-gray-50 rounded-lg border-t">
+      <div className="mt-4 mx-4 p-4 bg-gray-50 rounded-lg border-t">
         {/* AI Extracted Information first - full width row */}
         <div className="mb-6">
           <h4 className="font-medium text-gray-900 mb-3">AI Extracted Information</h4>
@@ -103,15 +105,19 @@ const ResultSummary: React.FC = () => {
           </div>
         </div>
 
-        {/* Document Preview - full width below */}
+        {/* Document Preview - full width below with A4 aspect ratio */}
         <div>
           <h4 className="font-medium text-gray-900 mb-3">Document Preview</h4>
-          <div className="bg-white border rounded-lg p-6 h-80 flex items-center justify-center">
-            <div className="text-center text-gray-500">
-              <FileText className="w-16 h-16 mx-auto mb-3" />
-              <p className="text-lg font-medium">PDF Preview</p>
-              <p className="text-sm">{documentType}</p>
-            </div>
+          <div className="bg-white border rounded-lg p-6">
+            <AspectRatio ratio={210/297}>
+              <div className="w-full h-full flex items-center justify-center bg-gray-50">
+                <div className="text-center text-gray-500">
+                  <FileText className="w-16 h-16 mx-auto mb-3" />
+                  <p className="text-lg font-medium">PDF Preview</p>
+                  <p className="text-sm">{documentType}</p>
+                </div>
+              </div>
+            </AspectRatio>
           </div>
         </div>
       </div>
@@ -144,15 +150,17 @@ const ResultSummary: React.FC = () => {
             </div>
             <div>
               <span className="text-sm text-gray-600">Loan-to-Income Ratio</span>
-              <p className="text-2xl font-bold text-gray-900">{requestedLoanToIncomeRatio.toFixed(1)}x</p>
+              <p className={`text-2xl font-bold ${isRatioHigh ? 'text-red-600' : 'text-gray-900'}`}>
+                {requestedLoanToIncomeRatio.toFixed(1)}x
+              </p>
             </div>
           </div>
 
           {needsAdjustment && (
             <div className="pt-4 border-t border-gray-200">
-              <div className="bg-gray-50 p-4 rounded border border-gray-200">
+              <div className="bg-ing-light-orange p-4 rounded border border-ing-orange">
                 <div className="flex items-center gap-2 mb-2">
-                  <Bot className="w-4 h-4 text-gray-600" />
+                  <Bot className="w-4 h-4 text-ing-orange" />
                   <span className="font-medium text-gray-900">AI Guidance</span>
                 </div>
                 <p className="text-sm text-gray-700 mb-2">
