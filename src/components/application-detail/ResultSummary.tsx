@@ -5,6 +5,7 @@ import { TrendingUp, Calculator, FileText, DollarSign, Shield, Bot, ChevronDown,
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import FraudDetection from './FraudDetection';
 
 const ResultSummary: React.FC = () => {
   const [expandedDocument, setExpandedDocument] = useState<string | null>(null);
@@ -399,6 +400,9 @@ const ResultSummary: React.FC = () => {
               </div>
             </div>
           </div>
+          
+          {/* Fraud Detection Section */}
+          <FraudDetection documentType={documentType} />
         </div>
       </div>
     );
