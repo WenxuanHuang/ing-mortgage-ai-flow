@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -11,6 +10,7 @@ const DocumentProcessing: React.FC = () => {
   const mockDocuments = [
     {
       name: 'Salary Statement',
+      docName: 'salary_statement.pdf',
       extractionProgress: 100,
       validationScore: 98,
       tasks: [
@@ -24,6 +24,7 @@ const DocumentProcessing: React.FC = () => {
     },
     {
       name: 'Bank Statement',
+      docName: 'bank_statement.pdf',
       extractionProgress: 87,
       validationScore: 94,
       tasks: [
@@ -37,6 +38,7 @@ const DocumentProcessing: React.FC = () => {
     },
     {
       name: 'Employer Statement',
+      docName: 'employer_statement.pdf',
       extractionProgress: 95,
       validationScore: 96,
       tasks: [
@@ -126,7 +128,6 @@ const DocumentProcessing: React.FC = () => {
               ))}
             </div>
 
-            {/* Fraud Detection Section */}
             <FraudDetection document={doc} />
           </CardContent>
         </Card>

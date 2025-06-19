@@ -34,7 +34,7 @@ const ApplicationDetailView = ({ application }) => {
         </TabsContent>
         
         <TabsContent value="agents" className="mt-6">
-          <AgentActivity />
+          <AgentActivity application={application} />
         </TabsContent>
         
         <TabsContent value="audit" className="mt-6">
@@ -42,7 +42,7 @@ const ApplicationDetailView = ({ application }) => {
         </TabsContent>
         
         <TabsContent value="customer" className="mt-6">
-          <CustomerProfile />
+          <CustomerProfile application={application} />
         </TabsContent>
       </Tabs>
     </div>
