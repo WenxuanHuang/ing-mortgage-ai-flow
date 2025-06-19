@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Eye, RefreshCw } from 'lucide-react';
+import FraudDetection from './FraudDetection';
 
 const DocumentProcessing: React.FC = () => {
   const mockDocuments = [
@@ -124,6 +125,9 @@ const DocumentProcessing: React.FC = () => {
                 <DataValidation key={i} field={field} />
               ))}
             </div>
+
+            {/* Fraud Detection Section */}
+            <FraudDetection document={doc} />
           </CardContent>
         </Card>
       ))}
